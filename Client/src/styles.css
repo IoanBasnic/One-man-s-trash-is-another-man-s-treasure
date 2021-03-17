@@ -1,0 +1,81 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  background-color: white;
+  font-family: ProximaNovaExtrabold,Open Sans,sans-serif;
+
+}
+
+.navigation {
+  background-color: #fff;
+  height: 75px;
+  width: 100%;
+  border-bottom: 2px solid #f2f2f2;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+}
+
+
+@media (min-width: 1280px) {
+  .navigation-bar {
+    padding: 0 40px;
+  }
+}
+@media (min-width: 1200px) {
+      .navigation-bar {
+        float: right;
+        height: 100%;
+        max-width: 100%;
+        padding: 0 30px;
+    }
+}
+
+div {
+  display: block;
+}
+
+.navigation-bar-inside {
+  display: -webkit-flex;
+  display: -moz-box;
+  display: flex;
+}
+
+.navigation-bar-inside {
+  -webkit-justify-content: space-between;
+  -moz-box-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+
+.itemsList_a {
+  display: inline-block;
+  position: relative;
+  color: #222;
+  text-decoration: none;
+  font-size: xx-large;
+  margin-left: 60px;
+}
+.itemsList_a::after {
+  content: '';
+  position: absolute;
+  width: 75%;
+  transform: scaleX(0);
+  height: 0.15em;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg
+    ,#f4633a,#c800a1,#0033a0);
+  transform-origin: bottom right;
+  transition: transform 0.30s ease-out;
+}
+.itemsList_a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
