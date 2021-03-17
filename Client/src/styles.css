@@ -1,8 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 * {
-  background-color: white;
   font-family: ProximaNovaExtrabold,Open Sans,sans-serif;
 
+}
+
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+::selection {
+  background: #1abc9c;
+  color: #fff;
 }
 
 .navigation {
@@ -79,3 +88,118 @@ div {
   transform-origin: bottom left;
 }
 
+.footer_desk {
+  background-color: #000;
+  max-width: 100vw;
+}
+
+footer {
+  display: block;
+}
+
+@media (min-width: 1280px) {
+  .footerContent {
+    padding: 82px 70px 64px;
+  }
+
+  @media (min-width: 768px) {
+    .footerContent {
+      padding: 82px 30px 64px;
+    }
+
+    @media (min-width: 320px) {
+      .footerContent {
+        padding: 64px 20px 34px;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .footerContent-up {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+        "logo ."
+        "cta1 cta2"
+        "socialIcons .";
+  }
+
+  @media (min-width: 320px) {
+    .footerContent-up {
+      display: -webkit-flex;
+      display: -moz-box;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-flex-direction: column;
+      -moz-box-orient: vertical;
+      -moz-box-direction: normal;
+      flex-direction: column;
+      -webkit-align-items: center;
+      -moz-box-align: center;
+      align-items: center;
+    }
+  }
+}
+
+
+
+.foot-a {
+  display: inline-block;
+  position: relative;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: medium;
+  margin-left: 10px;
+}
+.foot-a::after {
+  content: '';
+  position: absolute;
+  width: 75%;
+  transform: scaleX(0);
+  height: 0.20em;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg
+    ,#f4633a,#c800a1,#0033a0);
+  transform-origin: bottom right;
+  transition: transform 0.30s ease-out;
+}
+.foot-a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.fa-github {
+  margin-left: 60px;
+  margin-right: 120px;
+}
+
+
+@media (min-width: 768px) {
+  .footerContent-down {
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-flex-direction: row;
+    -moz-box-orient: horizontal;
+    -moz-box-direction: normal;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: flex-start;
+    -moz-box-pack: start;
+    justify-content: center;
+  }
+
+  @media (min-width: 320px) {
+    .footerContent-down {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      justify-items: center;
+    }
+  }
+}
