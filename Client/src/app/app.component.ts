@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 
+
 export class AppComponent {
   title = 'Client';
   searchText;
@@ -21,4 +22,8 @@ export class AppComponent {
     { id: 19, name: 'Magma' , country: 'South Africa'},
     { id: 20, name: 'Tornado' , country: 'Sri Lanka'}
   ];
+=======
+export class AppComponent {
+  title = 'Client';
+
 }

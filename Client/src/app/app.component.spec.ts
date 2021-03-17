@@ -29,4 +29,3 @@ describe('AppComponent', () => {
     expect(compiled.querySelector('.content span').textContent).toContain('Client app is running!');
   });
 });
-
