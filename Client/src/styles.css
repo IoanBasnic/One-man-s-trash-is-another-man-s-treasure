@@ -1,0 +1,208 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  font-family: ProximaNovaExtrabold,Open Sans,sans-serif;
+
+}
+body { margin: 0; }
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+::selection {
+  background: #1abc9c;
+  color: #fff;
+}
+
+.navigation {
+  background-color: #fff;
+  height: 75px;
+  width: 100%;
+  border-bottom: 2px solid #f2f2f2;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+}
+
+
+@media (min-width: 1280px) {
+  .navigation-bar {
+    padding: 0 40px;
+  }
+}
+@media (min-width: 1200px) {
+      .navigation-bar {
+        float: right;
+        height: 100%;
+        max-width: 100%;
+        padding: 0 30px;
+    }
+}
+
+div {
+  display: block;
+}
+
+.navigation-bar-inside {
+  display: -webkit-flex;
+  display: -moz-box;
+  display: flex;
+}
+
+.navigation-bar-inside {
+  -webkit-justify-content: space-between;
+  -moz-box-pack: justify;
+  justify-content: space-between;
+  -webkit-align-items: center;
+  -moz-box-align: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+
+.itemsList_a {
+  display: inline-block;
+  position: relative;
+  color: #222;
+  text-decoration: none;
+  font-size: xx-large;
+  margin-left: 60px;
+}
+.itemsList_a::after {
+  content: '';
+  position: absolute;
+  width: 75%;
+  transform: scaleX(0);
+  height: 0.15em;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg
+    ,#f4633a,#c800a1,#0033a0);
+  transform-origin: bottom right;
+  transition: transform 0.30s ease-out;
+}
+.itemsList_a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.footer_desk {
+  background-color: #000;
+  width:100%;
+  bottom:0;
+  left:0;
+}
+
+
+@media (min-width: 1280px) {
+  .footerContent {
+    padding: 82px 70px 64px;
+  }
+
+  @media (min-width: 768px) {
+    .footerContent {
+      padding: 82px 30px 64px;
+    }
+
+    @media (min-width: 320px) {
+      .footerContent {
+        padding: 64px 20px 34px;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .footerContent-up {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+        "logo ."
+        "cta1 cta2"
+        "socialIcons .";
+  }
+
+  @media (min-width: 320px) {
+    .footerContent-up {
+      display: -webkit-flex;
+      display: -moz-box;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-flex-direction: column;
+      -moz-box-orient: vertical;
+      -moz-box-direction: normal;
+      flex-direction: column;
+      -webkit-align-items: center;
+      -moz-box-align: center;
+      align-items: center;
+    }
+  }
+}
+
+
+
+.foot-a {
+  display: inline-block;
+  position: relative;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: medium;
+  margin-left: 10px;
+}
+.foot-a::after {
+  content: '';
+  position: absolute;
+  width: 75%;
+  transform: scaleX(0);
+  height: 0.20em;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg
+    ,#f4633a,#c800a1,#0033a0);
+  transform-origin: bottom right;
+  transition: transform 0.30s ease-out;
+}
+.foot-a:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.fa-github {
+  margin-left: 60px;
+  margin-right: 120px;
+}
+
+
+@media (min-width: 768px) {
+  .footerContent-down {
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-flex-direction: row;
+    -moz-box-orient: horizontal;
+    -moz-box-direction: normal;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: flex-start;
+    -moz-box-pack: start;
+    justify-content: center;
+  }
+
+  @media (min-width: 320px) {
+    .footerContent-down {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      justify-items: center;
+    }
+  }
+}
+
+.bodyContent {
+  padding-bottom: 50%;
+}
