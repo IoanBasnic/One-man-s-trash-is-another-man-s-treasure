@@ -1,77 +1,56 @@
 
-<nav class="navigation">
+
+<nav id='navbar' class="navigation">
   <div class="navigation-bar">
     <div class="navigation-bar-inside">
       <ul class="itemList">
-        <a target="_self" class="itemsList_a" href="#">Login</a>
-        <a target="_self" class="itemsList_a"href="#">Register</a>
-        <a target="_self" class="itemsList_a" href="#">About project</a>
+        <div class="homeBtn"> <a target="_self" class="itemsList_a" routerLink="/">Home</a></div>
+        <a target="_self" class="itemsList_a" routerLink="/login">Login</a>
+        <a target="_self" class="itemsList_a" routerLink="/register">Register</a>
+        <a target="_self" class="itemsList_a" routerLink="/about">About project</a>
       </ul>
     </div>
   </div>
 </nav>
 
-
-
 <div class="bodyContent">
-  <div ng-app="sample" >
-    <div class="sample ten">
-      <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Start searching">
-      <button type="submit" class="btn btn-search">
-        <i class="fa fa-search"></i>
-      </button>
-      <button type="reset" class="btn btn-reset fa fa-times"></button>
-    </div>
-    <br>
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>Id</th>
-        <th>Hero Name</th>
-        <th>Country</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let user of users | filter:searchText">
-        <td>{{user.id}}</td>
-        <td>{{user.name}}</td>
-        <td>{{user.country}}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <router-outlet></router-outlet>
+<!--  <div ng-app="sample" >-->
+<!--    <div class="sample ten">-->
+<!--      <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="Start searching">-->
+<!--      <button type="submit" class="btn btn-search">-->
+<!--        <i class="fa fa-search"></i>-->
+<!--      </button>-->
+<!--      <button type="reset" class="btn btn-reset fa fa-times"></button>-->
+<!--    </div>-->
+<!--    <br>-->
+<!--    <table class="table table-striped">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <th>Id</th>-->
+<!--        <th>Hero Name</th>-->
+<!--        <th>Country</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      <tr *ngFor="let user of users | filter:searchText">-->
+<!--        <td>{{user.id}}</td>-->
+<!--        <td>{{user.name}}</td>-->
+<!--        <td>{{user.country}}</td>-->
+<!--      </tr>-->
+<!--      </tbody>-->
+<!--    </table>-->
+<!--  </div>-->
 </div>
 
 <footer class="footer_desk">
+
   <div class="footerContent">
-    <div class="footerContent-up">
-      <div class="footContent">
-        <ul class="itemsList">
-          <i class="fa fa-github" style="font-size:60px;color:white;"></i>
-          <i class="fa fa-github" style="font-size:60px;color:white;"></i>
-          <i class="fa fa-github" style="font-size:60px;color:white;"></i>
-        </ul>
-        <ul class="itemsList">
-          <a target="_self" class="foot-a" href="https://github.com/IoanBasnic">
-            Basnic Ioan Github profile
-          </a>
-          <a target="_self" class="foot-a">
-            Belea Sebastian Github profile
-          </a>
-          <a target="_self" class="foot-a">
-            Horvath Petra Github profile
-          </a>
-        </ul>
-      </div>
-    </div>
     <div class="footerContent-down">
       <div class="footContent">
 
         <ul class="itemsList">
-          <i class="fa fa-github-square" style="font-size:60px;color:white;"></i>
-        </ul>
-
-        <ul class="itemsList">
+          <i class="fa fa-github" style="font-size:60px;color:white;"></i>
           <a target="_self" class="foot-a" href="https://github.com/IoanBasnic/One-man-s-trash-is-another-man-s-treasure">
             Project github
           </a>
@@ -80,11 +59,4 @@
     </div>
   </div>
 </footer>
-=======
-<html>
-
-
-</html>
-
-
 

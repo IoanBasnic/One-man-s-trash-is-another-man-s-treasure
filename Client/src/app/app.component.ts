@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-
+import { HostListener } from '@angular/core';
+import { OnInit } from '@angular/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 
-
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Client';
   searchText;
   users = [
@@ -22,8 +22,17 @@ export class AppComponent {
     { id: 19, name: 'Magma' , country: 'South Africa'},
     { id: 20, name: 'Tornado' , country: 'Sri Lanka'}
   ];
-=======
-export class AppComponent {
-  title = 'Client';
+  constructor() { }
+  ngOnInit(): void {
+    const header = document.querySelector('nav');
+    const sectionOne = document.querySelector('.wrapper');
 
+    header.classList.add('nav-noscroll');
+    header.classList.remove('.navigation');
+
+
+
+
+  }
 }
+

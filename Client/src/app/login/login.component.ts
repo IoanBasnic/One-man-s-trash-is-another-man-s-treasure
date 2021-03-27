@@ -10,6 +10,13 @@ export class LoginComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    const header = document.querySelector('nav');
+    const sectionOne = document.querySelector('.wrapper');
+
+    header.classList.add('nav-noscroll');
+    header.classList.remove('.navigation');
+
+
   }
 
 }
