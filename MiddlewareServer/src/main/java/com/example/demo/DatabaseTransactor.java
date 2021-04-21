@@ -15,22 +15,22 @@ import org.springframework.context.annotation.Configuration;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-@Configuration
-public class DatabaseTransactor {
-    @Value("${spring.data.mongodb.uri}")
-    private String connectionString;
-
-    @Bean
-    public MongoClient mongoClient() {
-        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
-        CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
-        return MongoClients.create(MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(connectionString))
-                .codecRegistry(codecRegistry)
-                .build());
-    }
-
-    //MongoCollection<Client> personCollection = db.getCollection("persons", Client.class);
-
-
-}
+//@Configuration
+//public class DatabaseTransactor {
+//    @Value("${spring.data.mongodb.uri}")
+//    private String connectionString;
+//
+//    @Bean
+//    public MongoClient mongoClient() {
+//        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
+//        CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
+//        return MongoClients.create(MongoClientSettings.builder()
+//                .applyConnectionString(new ConnectionString(connectionString))
+//                .codecRegistry(codecRegistry)
+//                .build());
+//    }
+//
+//    //MongoCollection<Client> personCollection = db.getCollection("persons", Client.class);
+//
+//
+//}

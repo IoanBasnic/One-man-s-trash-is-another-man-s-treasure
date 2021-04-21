@@ -76,3 +76,19 @@ class ProductController {
         return productRepository.save(product);
     }
 }
+
+interface ClientRepository extends MongoRepository<Client, String> {}
+
+@RestController
+@RequestMapping("/client")
+class ClientController {
+
+    @Autowired
+    private ClientRepository clientRepository;
+
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public Client add(@RequestBody Client client) {
+        return clientRepository.save(client);
+    }
+}
