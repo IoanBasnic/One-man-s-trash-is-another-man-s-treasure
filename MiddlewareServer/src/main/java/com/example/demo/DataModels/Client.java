@@ -1,10 +1,13 @@
 package com.example.demo.DataModels;
 
-import java.util.UUID;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 
 class ClientData {
-    UUID id;
-    UUID clientId;
+    String id;
+    String clientId;
     String firstName;
     String secondName;
     String address;
@@ -12,7 +15,7 @@ class ClientData {
     String phoneNumber;
     Coordinates coordinates;
 
-    public ClientData(UUID id, UUID clientId, String firstName, String secondName, String address, PaymentMethod paymentMethod, String phoneNumber) {
+    public ClientData(String id, String clientId, String firstName, String secondName, String address, PaymentMethod paymentMethod, String phoneNumber) {
         this.id = id;
         this.clientId = clientId;
         this.firstName = firstName;
@@ -23,17 +26,23 @@ class ClientData {
     }
 }
 
+@Document(collection = "Client")
 public class Client { //password encrypted
-    UUID id;
+    @Id
+    String id;
+
+    @Indexed(unique = true)
     String email;
+
     String password;
+
     String username;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -63,15 +72,15 @@ public class Client { //password encrypted
 }
 
 class PaymentInfo{
-    UUID id;
-    UUID clientId;
+    String id;
+    String clientId;
 
     //to complete
 }
 
 class ImageData{
-    UUID id;
-    UUID clientId;
+    String id;
+    String clientId;
 }
 
 class Coordinates{

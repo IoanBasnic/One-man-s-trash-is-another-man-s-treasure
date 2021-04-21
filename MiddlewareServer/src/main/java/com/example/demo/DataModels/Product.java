@@ -1,16 +1,24 @@
 package com.example.demo.DataModels;
 
-import java.util.UUID;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+
+@Document(collection = "Product")
 public class Product {
-    UUID id;
-    UUID clientId;
+    @Id
+    String id;
+
+    String clientId;
+
     String title;
+
     String description;
+
     Float askingPrice;
 
     public Product(
-//            UUID id, UUID clientId, String title, String description, Float askingPrice
+//            String id, String clientId, String title, String description, Float askingPrice
     ) {
 //        this.id = id;
 //        this.clientId = clientId;
@@ -19,19 +27,19 @@ public class Product {
 //        this.askingPrice = askingPrice;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public UUID getClientId() {
+    public String getClientId() {
         return clientId;
     }
 
-    public void setClientId(UUID clientId) {
+    public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 

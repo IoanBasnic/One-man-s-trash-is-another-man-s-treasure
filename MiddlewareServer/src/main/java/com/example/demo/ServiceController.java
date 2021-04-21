@@ -2,11 +2,12 @@ package com.example.demo;
 
 import com.example.demo.DataModels.Client;
 import com.example.demo.DataModels.Product;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,28 +16,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ServiceController {
-    private static Map<UUID, Product> productRepo = new HashMap<>();
-    private static Map<UUID, Client> clientRepo = new HashMap<>();
+    private static Map<String, Product> productRepo = new HashMap<>();
+    private static Map<String, Client> clientRepo = new HashMap<>();
 
-    static {
-        Product honey = new Product();
-        honey.setId(UUID.fromString("00000000-0000-0000-0000-000000000000"));
-        honey.setClientId(UUID.fromString("00000000-0000-0000-0000-000000000000"));
-        honey.setTitle("Honey");
-        productRepo.put(honey.getId(), honey);
-
-        Product almond = new Product();
-        almond.setId(UUID.randomUUID());
-        almond.setTitle("Almond");
-        productRepo.put(almond.getId(), almond);
-
-        Client client = new Client();
-
-        client.setId(UUID.randomUUID());
-        client.setUsername("Username");
-        clientRepo.put(client.getId(), client);
-
-    }
+//    static {
+//        Product honey = new Product();
+//        honey.setId(String.fromString("00000000-0000-0000-0000-000000000000"));
+//        honey.setClientId(String.fromString("00000000-0000-0000-0000-000000000000"));
+//        honey.setTitle("Honey");
+//        productRepo.put(honey.getId(), honey);
+//
+//        Product almond = new Product();
+//        almond.setId(String.randomString());
+//        almond.setTitle("Almond");
+//        productRepo.put(almond.getId(), almond);
+//
+//        Client client = new Client();
+//
+//        client.setId(String.randomString());
+//        client.setUsername("Username");
+//        clientRepo.put(client.getId(), client);
+//
+//    }
 
     //GET all products
     @RequestMapping(value = "/products", method = RequestMethod.GET)
@@ -54,8 +55,24 @@ public class ServiceController {
     //GET all products of client with id
     @RequestMapping(value = "/products/{clientId}", method = RequestMethod.GET)
     public ResponseEntity<Object> getProductByClientId(@PathVariable("clientId") String clientId) {
-        return new ResponseEntity<>(productRepo.values().stream().filter(product -> product.getClientId().equals(UUID.fromString(clientId))), HttpStatus.OK);
+        return new ResponseEntity<>(productRepo.values().stream().filter(product -> product.getClientId().equals(clientId)), HttpStatus.OK);
     }
 
     //GET products by different filters
+}
+
+interface ProductRepository extends MongoRepository<Product, String> {}
+
+@RestController
+@RequestMapping("/product")
+class ProductController {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public Product add(@RequestBody Product product) {
+        return productRepository.save(product);
+    }
 }
