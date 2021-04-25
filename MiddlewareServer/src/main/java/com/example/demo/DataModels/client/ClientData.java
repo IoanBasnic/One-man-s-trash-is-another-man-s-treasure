@@ -80,7 +80,7 @@ public class ClientData {
     }
 }
 
-class Coordinates {
+class Coordinates{
     long latitude;
     long longitude;
 }

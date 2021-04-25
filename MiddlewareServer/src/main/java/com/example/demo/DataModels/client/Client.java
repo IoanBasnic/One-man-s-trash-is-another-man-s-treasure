@@ -15,6 +15,7 @@ public class Client { //password encrypted
 
     String password;
 
+    @Indexed(unique = true)
     String username;
 
     public String getId() {

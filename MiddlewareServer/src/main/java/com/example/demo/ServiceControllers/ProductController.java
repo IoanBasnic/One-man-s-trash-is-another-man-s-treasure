@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-interface ProductRepository extends MongoRepository<Product, String>{ }
+interface ProductRepository extends MongoRepository<Product, String>{}
 
 
 @RestController
