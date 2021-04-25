@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
-@Document(collection = "Product")
+@Document(collection = "product")
 public class Product {
     @Id
     String id;
@@ -16,16 +16,6 @@ public class Product {
     String description;
 
     Float askingPrice;
-
-    public Product(
-//            String id, String clientId, String title, String description, Float askingPrice
-    ) {
-//        this.id = id;
-//        this.clientId = clientId;
-//        this.title = title;
-//        this.description = description;
-//        this.askingPrice = askingPrice;
-    }
 
     public String getId() {
         return id;

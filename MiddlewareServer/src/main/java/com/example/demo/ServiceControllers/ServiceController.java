@@ -1,6 +1,6 @@
-package com.example.demo;
+package com.example.demo.ServiceControllers;
 
-import com.example.demo.DataModels.Client;
+import com.example.demo.DataModels.client.Client;
 import com.example.demo.DataModels.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -40,10 +40,10 @@ public class ServiceController {
 //    }
 
     //GET all products
-    @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public ResponseEntity<Object> getProduct() {
-        return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
-    }
+    //@RequestMapping(value = "/products", method = RequestMethod.GET)
+    //public ResponseEntity<Object> getProduct() {
+     //   return new ResponseEntity<>(productRepo.values(), HttpStatus.OK);
+    //}
 
     //POST client (register)
     //GET client data by logging in
@@ -61,34 +61,5 @@ public class ServiceController {
     //GET products by different filters
 }
 
-interface ProductRepository extends MongoRepository<Product, String> {}
 
-@RestController
-@RequestMapping("/product")
-class ProductController {
 
-    @Autowired
-    private ProductRepository productRepository;
-
-    @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public Product add(@RequestBody Product product) {
-        return productRepository.save(product);
-    }
-}
-
-interface ClientRepository extends MongoRepository<Client, String> {}
-
-@RestController
-@RequestMapping("/client")
-class ClientController {
-
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public Client add(@RequestBody Client client) {
-        return clientRepository.save(client);
-    }
-}
