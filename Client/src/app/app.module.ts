@@ -6,15 +6,17 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import {FormsModule} from '@angular/forms';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { Routes, RouterModule } from '@angular/router'; // CLI imports router
+import { HttpClientModule } from '@angular/common/http';
+import { MyprofileComponent } from './myprofile/myprofile.component';
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'profile', component: MyprofileComponent },
   { path: '', component: HomeComponent },
 ]; // sets up routes constant where you define your routes
 
@@ -38,13 +40,18 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RegisterComponent,
+    LoginComponent,
+    MyprofileComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
+    HttpClientModule,
     Ng2SearchPipeModule,
-    RouterModule.forRoot(routes)],
+    RouterModule.forRoot(routes),
+    ReactiveFormsModule
+  ],
   exports: [RouterModule],
   bootstrap: [AppComponent]
 })
