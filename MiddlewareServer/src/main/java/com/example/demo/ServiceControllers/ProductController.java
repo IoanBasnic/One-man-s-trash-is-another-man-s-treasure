@@ -1,19 +1,21 @@
 package com.example.demo.ServiceControllers;
 
 import com.example.demo.DataModels.Product;
+import com.example.demo.DataModels.client.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 interface ProductRepository extends MongoRepository<Product, String>{}
 
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/product")
 public class ProductController {
@@ -21,10 +23,20 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ClientRepository clientRepository;
+
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Product add(@RequestBody Product product) {
-        return productRepository.save(product);
+    public ResponseEntity add(@RequestBody Product product) {
+        Optional<Client> foundClient = clientRepository.findById(product.getClientId());
+
+        if(foundClient.isPresent()){
+            Product savedProduct = productRepository.save(product);
+            return ResponseEntity.status(200).body(savedProduct);
+        }
+        return ResponseEntity.status(404).body("Client ID not found");
+
     }
 
     @GetMapping

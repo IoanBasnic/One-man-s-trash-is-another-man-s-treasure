@@ -2,7 +2,7 @@
 <div class="wrapper">
   <div class="title">
     Register</div>
-  <form action="#">
+  <form action="/client">
     <div class="field">
       <input type="text" required>
       <label>Username</label>
@@ -20,7 +20,7 @@
       <label for="are-you-18">Are you 18?</label>
     </div>
     <div class="field">
-      <input type="submit" value="Register">
+      <input type="submit" value="Register" (click)=sendData>
     </div>
     <div class="signup">
       <span>Already a member? </span>
