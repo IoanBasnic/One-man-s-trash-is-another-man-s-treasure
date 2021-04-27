@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+
+import { FormBuilder, FormGroup } from '@angular/forms';
+import {HttpClient, HttpEvent, HttpHandler, HttpHeaders, HttpRequest, HttpResponse} from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {User} from '../user.model';
+
+
+
+
 
 @Component({
   selector: 'app-register',
@@ -8,7 +16,19 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private http: HttpClient) { }
+
+  user: User = new User();
+  register: any;
+  myForm: FormGroup;
+
+  postData = {
+  };
+  url = 'http://localhost:8080/client';
+
+  constructor(private fb: FormBuilder, private http: HttpClient) {
+    // this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });
+  }
+
 
   ngOnInit(): void {
     const header = document.querySelector('nav');
@@ -16,11 +36,32 @@ export class RegisterComponent implements OnInit {
 
     header.classList.add('nav-noscroll');
     header.classList.remove('.navigation');
-
+    this.myForm = this.fb.group({username: '', email: '', password: ''});
+    this.myForm.valueChanges.subscribe(console.log);
   }
 
-  sendData(data): void {
-    this.http.post<any>('https://reqres.in/api/posts', { title: 'Angular POST Request Example' }).subscribe(data);
+  createUser(): void {
+    this.postData = {
+      username: this.myForm.getRawValue().username,
+      email: this.myForm.getRawValue().email,
+      password: this.myForm.getRawValue().password
+    };
+    // this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });
+    this.http.post(this.url, this.postData, {observe: 'response'}).subscribe(resp => {
+      console.log(resp.status);
+      if (resp.status === 200) {
+        alert('Congratulations, your account has been successfully created');
+        window.location.href = '/login';
+      }
+      else {
+        alert('Error: ' + resp.status);
+      }
+    });
+    // window.location.href = '/login';
   }
+
 
 }
+
+
+

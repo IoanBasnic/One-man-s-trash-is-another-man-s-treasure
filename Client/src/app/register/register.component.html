@@ -2,17 +2,20 @@
 <div class="wrapper">
   <div class="title">
     Register</div>
-  <form action="/client">
+
+
+  <form [formGroup]="myForm">
+    value: {{myForm.value | json}}
     <div class="field">
-      <input type="text" required>
+      <input type="text" formControlName="username" name="username" ng-required="true">
       <label>Username</label>
     </div>
     <div class="field">
-      <input type="text" required>
+      <input type="text" formControlName="email" name="email" ng-required="true">
       <label>Email Address</label>
     </div>
     <div class="field">
-      <input type="password" required>
+      <input type="password" formControlName="password" name="password" ng-required="true">
       <label>Password</label>
     </div>
     <div class="checkbox">
@@ -20,7 +23,7 @@
       <label for="are-you-18">Are you 18?</label>
     </div>
     <div class="field">
-      <input type="submit" value="Register" (click)=sendData>
+      <input type="submit" value="Register" (click)="createUser()">
     </div>
     <div class="signup">
       <span>Already a member? </span>
@@ -29,3 +32,4 @@
   </form>
 </div>
 </div>
+
