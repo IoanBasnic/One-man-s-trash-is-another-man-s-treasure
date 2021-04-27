@@ -1,7 +1,6 @@
 package com.example.demo.ServiceControllers;
 
 import com.example.demo.DataModels.client.Client;
-import com.mongodb.MongoWriteException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -9,12 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 interface ClientRepository extends MongoRepository<Client, String> {
 
 }
 
+@CrossOrigin(maxAge = 3600)
 @RestController
 @RequestMapping("/client")
 public class ClientController {
