@@ -1,1 +1,67 @@
-<p>myprofile works!</p>
+<div class="bef-wrapper">
+  <div class="wrapper">
+
+    <div class="row">
+      <div class="column">
+        <h2>My profile</h2>
+        <img src="https://i.ibb.co/2dq85rq/unnamed.png" alt="unnamed" border="0">
+      </div>
+      <div class="column" >
+        <h2>Name:</h2>
+        <p>{{client.name}}</p>
+        <h2>Email:</h2>
+        <p>{{client.email}}.</p>
+        <h2>Address:</h2>
+        <p>{{client.address}} <button onclick="document.getElementById('idAddress').style.display='block'">Edit</button> </p>
+        <h2>Phone Number:</h2>
+        <p>{{client.phoneNumber}} <button onclick="document.getElementById('idPhoneNumber').style.display='block'">Edit</button> </p>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="column" >
+
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div id="idAddress" class="modal">
+
+  <form class="modal-content animate">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('idAddress').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+
+    <div class="container">
+      <label ><b>New Address:</b></label>
+      <input type="text" placeholder="New address" name="uname" required>
+      <button class="btn" type="submit">Edit address</button>
+
+    </div>
+
+
+  </form>
+</div>
+
+
+<div id="idPhoneNumber" class="modal">
+
+  <form class="modal-content animate">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('idPhoneNumber').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+
+    <div class="container">
+      <label ><b>New Phone Number:</b></label>
+      <input type="text" placeholder="New phone number" name="uname" required>
+      <button class="btn" type="submit">Edit Phone Number</button>
+
+    </div>
+
+
+  </form>
+</div>

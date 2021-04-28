@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import {HttpClient, HttpEvent, HttpHandler, HttpHeaders, HttpRequest, HttpResponse} from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {User} from '../user.model';
+import {GlobalConstants} from '../../common/global-constants';
 
 
 
@@ -23,7 +24,8 @@ export class RegisterComponent implements OnInit {
 
   postData = {
   };
-  url = 'http://localhost:8080/client';
+
+  url = GlobalConstants.apiURL + 'client';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     // this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });
@@ -50,17 +52,14 @@ export class RegisterComponent implements OnInit {
     this.http.post(this.url, this.postData, {observe: 'response'}).subscribe(resp => {
       console.log(resp.status);
       if (resp.status === 200) {
-        alert('Congratulations, your account has been successfully created');
+        alert('Congratulations, your account has been successfully created!');
         window.location.href = '/login';
       }
       else {
         alert('Error: ' + resp.status);
       }
     });
-    // window.location.href = '/login';
   }
-
-
 }
 
 
