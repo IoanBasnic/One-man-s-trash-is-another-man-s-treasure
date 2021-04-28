@@ -10,6 +10,7 @@ import {GlobalConstants} from '../../common/global-constants';
 
 
 
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -24,7 +25,6 @@ export class RegisterComponent implements OnInit {
 
   postData = {
   };
-
   url = GlobalConstants.apiURL + 'client';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {

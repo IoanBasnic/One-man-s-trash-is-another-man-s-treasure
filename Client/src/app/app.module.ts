@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MyprofileComponent } from './myprofile/myprofile.component';
 import { ProductComponent } from './product/product.component';
 
+
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },

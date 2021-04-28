@@ -12,7 +12,6 @@ export class MyprofileComponent implements OnInit {
     address: '<add address>',
     phoneNumber: '<add phone number>'
   };
-
   constructor() { }
 
   ngOnInit(): void {

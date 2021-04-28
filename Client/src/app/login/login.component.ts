@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {GlobalConstants} from '../../common/global-constants';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,7 +15,9 @@ export class LoginComponent implements OnInit {
 
   postData = {
   };
+
   url = GlobalConstants.apiURL + 'loginClient';
+
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     // this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });
