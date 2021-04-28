@@ -11,6 +11,8 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { Routes, RouterModule } from '@angular/router'; // CLI imports router
 import { HttpClientModule } from '@angular/common/http';
 import { MyprofileComponent } from './myprofile/myprofile.component';
+import { ProductComponent } from './product/product.component';
+
 
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -43,7 +45,8 @@ const routes: Routes = [
     AppComponent,
     RegisterComponent,
     LoginComponent,
-    MyprofileComponent
+    MyprofileComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,
