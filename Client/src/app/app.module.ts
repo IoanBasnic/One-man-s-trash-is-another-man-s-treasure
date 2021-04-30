@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'about', component: AboutComponent },
   { path: 'profile', component: MyprofileComponent },
+  { path: 'products', component: ProductComponent },
   { path: '', component: HomeComponent },
 ]; // sets up routes constant where you define your routes
 
@@ -53,7 +54,8 @@ const routes: Routes = [
     HttpClientModule,
     Ng2SearchPipeModule,
     RouterModule.forRoot(routes),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [RouterModule],
   bootstrap: [AppComponent]

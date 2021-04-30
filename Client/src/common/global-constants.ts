@@ -1,4 +1,4 @@
 export class GlobalConstants {
-  public static apiURL = 'localhost:8080/';
+  public static apiURL = 'http://localhost:8080/';
 
 }
