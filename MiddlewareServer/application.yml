@@ -2,3 +2,18 @@ spring:
   data:
     mongodb:
       auto-index-creation: true
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          auth0:
+#            client-id: ItsfxDfiVtGvZZFU4eSX8fYJ0CKvrkQM
+#            client-secret: EIeim-s8CdaIpMNRNWI1_pGnQpg0UE_2GSmCuBohzsyDHAcwRkLOxTpOPHDHIQ92
+#            scope:
+#              - openid
+#              - profile
+#              - email
+#        provider:
+#          auth0:
+#            # trailing slash is important!
+#            issuer-uri: https://blue-bird.eu.auth0.com/
