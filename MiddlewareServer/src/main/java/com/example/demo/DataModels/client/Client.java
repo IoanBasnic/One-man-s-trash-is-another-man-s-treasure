@@ -19,6 +19,8 @@ public class Client { //password encrypted
     @Indexed(unique = true)
     String username;
 
+    ClientData clientData;
+
     public String getId() {
         return id;
     }
@@ -49,6 +51,19 @@ public class Client { //password encrypted
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public ClientData getClientData() {
+        return clientData;
+    }
+
+    public void setClientData(ClientData clientData) {
+        this.clientData = clientData;
+    }
+
+    public void update(Client client){
+        if(client.getClientData() != null)
+            clientData = client.getClientData();
     }
 }
 
