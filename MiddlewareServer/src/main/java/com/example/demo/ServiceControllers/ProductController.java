@@ -67,7 +67,7 @@ public class ProductController {
         return new ResponseEntity<>(productRepository.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/", params = "clientid")
+    @GetMapping(params = "clientid")
     public ResponseEntity<Object> getProductsByClientId(@RequestParam("clientid") String clientId) {
         List<Product> products = productRepository.findByClientId(clientId);
         return new ResponseEntity<>(products, HttpStatus.OK);

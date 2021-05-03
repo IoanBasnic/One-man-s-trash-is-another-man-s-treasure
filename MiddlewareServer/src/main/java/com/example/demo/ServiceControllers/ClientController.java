@@ -2,12 +2,25 @@ package com.example.demo.ServiceControllers;
 
 import com.example.demo.DataModels.client.Client;
 import com.example.demo.Repositories.ClientRepository;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -21,7 +34,8 @@ public class ClientController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ResponseEntity add(@RequestBody Client client) {
+    public ResponseEntity add(@RequestBody Client client) throws IOException, InterruptedException {
+
         if(client.getId() != null) {
             Optional<Client> existingClient = clientRepository.findById(client.getId());
 
@@ -39,15 +53,22 @@ public class ClientController {
             }
         }
 
-        Client savedClient;
+        if(!checkEmailValidity(client.getEmail()))
+            return ResponseEntity.status(400).body("{ \"message\": \"invalid email\"}");
 
+        Client savedClient;
         try {
             savedClient = clientRepository.save(client);
+            URL url = new URL("https://localhost:8080/register/sendmail?id=" + savedClient.getId());
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            InputStream responseStream = connection.getInputStream();
+            System.out.println(Arrays.toString(responseStream.readAllBytes()));
         } catch (DuplicateKeyException e){
             return ResponseEntity.status(400).body("{ \"message\": \"duplicate value\"}");
         } catch (Exception e){
             return ResponseEntity.status(500).body(e);
         }
+
 
         return ResponseEntity.status(200).body(savedClient);
     }
@@ -71,6 +92,29 @@ public class ClientController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getClientById(@PathVariable String id) {
         return new ResponseEntity<>(clientRepository.findById(id), HttpStatus.OK);
+    }
+
+
+    private Boolean checkEmailValidity(String email) throws IOException, InterruptedException {
+        /* This is the email validator. The reason it is commented out is because I have subscribed to
+         * an API that only lets us use the endpoint 1000 times a month before paying.
+         * PLEASE DO NOT comment it out unless you want to demo or test it specifically.
+         */
+
+//        HttpRequest request = HttpRequest.newBuilder()
+//                .uri(URI.create("https://mailcheck.p.rapidapi.com/?domain=" + email))
+//                .header("x-rapidapi-key", "b67e8ce408mshe31dda6d0f93030p16afe7jsnca0b526c2966")
+//                .header("x-rapidapi-host", "mailcheck.p.rapidapi.com")
+//                .method("GET", HttpRequest.BodyPublishers.noBody())
+//                .build();
+//        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+//
+//        org.springframework.boot.json.JsonParser parser = JsonParserFactory.getJsonParser();
+//        Map<String, Object> jsonMap = parser.parseMap(response.body());
+//
+//        return jsonMap.get("valid").toString().equals("true");
+
+        return true;
     }
 }
 
