@@ -1,35 +1,15 @@
 package com.example.demo.DataModels.client;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "client_data")
 public class ClientData {
-    @Id
-    String id;
-    String clientId;
     String firstName;
-    String secondName;
+    String lastName;
     String address;
     PaymentMethod paymentMethod;
     String phoneNumber;
     Coordinates coordinates;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -39,12 +19,12 @@ public class ClientData {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getAddress() {
