@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-
+import {AgmCoreModule} from '@agm/core';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './myprofile.component.html',
@@ -13,6 +13,8 @@ export class MyprofileComponent implements OnInit {
     address: '<add address>',
     phoneNumber: '<add phone number>'
   };
+  lat = 44.426164962;
+  lng = 26.102332924;
   constructor(public auth: AuthService) { }
 
   ngOnInit(): void {

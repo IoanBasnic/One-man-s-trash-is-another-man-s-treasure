@@ -12,7 +12,9 @@ import { Routes, RouterModule } from '@angular/router'; // CLI imports router
 import { HttpClientModule } from '@angular/common/http';
 import { MyprofileComponent } from './myprofile/myprofile.component';
 import { ProductComponent } from './product/product.component';
-
+import {AgmCoreModule} from '@agm/core';
+// @ts-ignore
+import {} from 'googlemaps';
 // Import the module from the SDK
 import { AuthModule } from '@auth0/auth0-angular';
 import { AddproductComponent } from './addproduct/addproduct.component';
@@ -57,6 +59,9 @@ const routes: Routes = [
     BrowserModule,
     HttpClientModule,
     Ng2SearchPipeModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBy1gdsv2P7YTNarViq_y6pahztakVY_3o'
+    }),
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
     FormsModule,

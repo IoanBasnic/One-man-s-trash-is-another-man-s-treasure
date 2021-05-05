@@ -26,6 +26,10 @@
 
 }
 
+agm-map {
+  height: 200px;
+}
+
 
 /* Extra styles for the cancel button */
 .cancelbtn {
