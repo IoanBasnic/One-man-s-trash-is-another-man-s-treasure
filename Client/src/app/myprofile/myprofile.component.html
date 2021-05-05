@@ -6,15 +6,19 @@
         <h2>My profile</h2>
         <img src="https://i.ibb.co/2dq85rq/unnamed.png" alt="unnamed" border="0">
       </div>
-      <div class="column" >
+      <div class="column" *ngIf="auth.user$ | async as user">
+<!--        <ul *ngIf="auth.user$ | async as user">-->
+<!--          <li>{{ user.name }}</li>-->
+<!--          <li>{{ user.email }}</li>-->
+<!--        </ul>-->
         <h2>Name:</h2>
-        <p>{{client.name}}</p>
+        <p>{{user.name}}</p>
         <h2>Email:</h2>
-        <p>{{client.email}}.</p>
+        <p>{{user.email}}.</p>
         <h2>Address:</h2>
-        <p>{{client.address}} <button onclick="document.getElementById('idAddress').style.display='block'">Edit</button> </p>
+        <p>{{user.address}} <button onclick="document.getElementById('idAddress').style.display='block'">Edit</button> </p>
         <h2>Phone Number:</h2>
-        <p>{{client.phoneNumber}} <button onclick="document.getElementById('idPhoneNumber').style.display='block'">Edit</button> </p>
+        <p>{{user.phoneNumber}} <button onclick="document.getElementById('idPhoneNumber').style.display='block'">Edit</button> </p>
       </div>
 
     </div>
@@ -66,3 +70,13 @@
   </form>
 </div>
 
+<div class="bef-wrapper">
+  <div class="wrapper">
+
+    <div class="row">
+      <div class="column">
+        <h2>My products:</h2>
+      </div>
+    </div>
+  </div>
+</div>

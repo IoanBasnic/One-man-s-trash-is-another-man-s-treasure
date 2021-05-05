@@ -5,6 +5,7 @@ import {HttpClient, HttpEvent, HttpHandler, HttpHeaders, HttpRequest, HttpRespon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {User} from '../user.model';
 import {GlobalConstants} from '../../common/global-constants';
+import {AuthService} from '@auth0/auth0-angular';
 
 
 
@@ -27,7 +28,7 @@ export class RegisterComponent implements OnInit {
   };
   url = GlobalConstants.apiURL + 'client';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(public auth: AuthService, private fb: FormBuilder, private http: HttpClient) {
     // this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });
   }
 

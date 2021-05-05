@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {GlobalConstants} from '../../common/global-constants';
-
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-auth-button',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -16,10 +16,10 @@ export class LoginComponent implements OnInit {
   postData = {
   };
 
-  url = GlobalConstants.apiURL + 'loginClient';
+  url = GlobalConstants.apiURL + 'client/login';
 
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(public auth: AuthService, private fb: FormBuilder, private http: HttpClient) {
     // this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });
   }
 
