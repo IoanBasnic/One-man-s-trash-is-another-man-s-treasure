@@ -13,13 +13,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { MyprofileComponent } from './myprofile/myprofile.component';
 import { ProductComponent } from './product/product.component';
 
-
+// Import the module from the SDK
+import { AuthModule } from '@auth0/auth0-angular';
+import { AddproductComponent } from './addproduct/addproduct.component';
 const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'about', component: AboutComponent },
   { path: 'profile', component: MyprofileComponent },
   { path: 'products', component: ProductComponent },
+  { path: 'addproduct', component: AddproductComponent },
   { path: '', component: HomeComponent },
 ]; // sets up routes constant where you define your routes
 
@@ -47,7 +50,8 @@ const routes: Routes = [
     RegisterComponent,
     LoginComponent,
     MyprofileComponent,
-    ProductComponent
+    ProductComponent,
+    AddproductComponent
   ],
   imports: [
     BrowserModule,
@@ -55,11 +59,17 @@ const routes: Routes = [
     Ng2SearchPipeModule,
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    AuthModule.forRoot({
+      domain: 'blue-bird.eu.auth0.com',
+      clientId: 'TquPbjI56X4ztU0YYI0lmXNRfS16572g'
+    }),
   ],
   exports: [RouterModule],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}
 
 
