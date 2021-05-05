@@ -3,6 +3,7 @@ import { HostListener } from '@angular/core';
 import { OnInit } from '@angular/core';
 import {AuthService} from '@auth0/auth0-angular';
 import {DOCUMENT} from '@angular/common';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
