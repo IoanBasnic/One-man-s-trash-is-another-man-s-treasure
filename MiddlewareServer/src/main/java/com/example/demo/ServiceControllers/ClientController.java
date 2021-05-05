@@ -68,21 +68,6 @@ public class ClientController {
         return ResponseEntity.status(200).body(savedClient);
     }
 
-    @PostMapping(value = "/login")
-    @ResponseBody
-    public ResponseEntity loginByEmail(@RequestParam String email, @RequestParam String password) {
-        Optional<Client> client = clientRepository.findByEmail(email);
-
-        if(client.isEmpty())
-            return ResponseEntity.status(404).body("{ \"message\": \"client not found\"}");
-
-        if(client.get().getPassword().equals(password)){
-            return ResponseEntity.status(200).body(client);
-        }
-
-        return ResponseEntity.status(400).body("{ \"message\": \"invalid credentials\"}");
-    }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getClientById(@PathVariable String id) {
