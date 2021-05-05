@@ -36,8 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .mvcMatchers("/").permitAll()
-                .mvcMatchers("/client").authenticated()
-                .mvcMatchers("/product").authenticated()
+//                .mvcMatchers("/client").authenticated()
+//                .mvcMatchers("/product").authenticated()
 //                .mvcMatchers("/api/private-scoped").hasAuthority("SCOPE_read:messages")
                 .and().cors()
                 .and().oauth2ResourceServer().jwt();

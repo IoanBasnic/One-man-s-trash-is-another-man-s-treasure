@@ -31,33 +31,19 @@ public class ClientController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity add(@RequestBody Client client) throws IOException, InterruptedException {
 
-        if(client.getId() != null) {
-            Optional<Client> existingClient = clientRepository.findById(client.getId());
-
-            if(existingClient.isEmpty())
-                return ResponseEntity.status(404).body("{ \"message\": \"the client with id: " + client.getId() + " doesn't exist; it can't be updated. If you are trying to create a new client, send an entity with id set to null\"}");
-            existingClient.get().update(client);
-
-            Client updatedClient;
-            try {
-                clientRepository.deleteById(client.getId());
-                updatedClient = clientRepository.save(existingClient.get());
-                return ResponseEntity.status(200).body(updatedClient);
-            } catch (Exception e){
-                return ResponseEntity.status(500).body(e);
-            }
-        }
-
-        if(!checkEmailValidity(client.getEmail()))
-            return ResponseEntity.status(400).body("{ \"message\": \"invalid email\"}");
-
         Client savedClient;
         try {
             savedClient = clientRepository.save(client);
+
             URL url = new URL("https://localhost:8080/register/sendmail?id=" + savedClient.getId());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             InputStream responseStream = connection.getInputStream();
             System.out.println(Arrays.toString(responseStream.readAllBytes()));
+
+//            URL url = new URL("https://localhost:8080/register/sendmail?id=" + savedClient.getId());
+//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//            InputStream responseStream = connection.getInputStream();
+//            System.out.println(Arrays.toString(responseStream.readAllBytes()));
         } catch (DuplicateKeyException e){
             return ResponseEntity.status(400).body("{ \"message\": \"duplicate value\"}");
         } catch (Exception e){

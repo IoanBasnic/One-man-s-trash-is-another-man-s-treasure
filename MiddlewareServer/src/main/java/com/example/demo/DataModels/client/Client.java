@@ -1,6 +1,5 @@
 package com.example.demo.DataModels.client;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,12 +11,9 @@ public class Client { //password encrypted
     String id;
 
     @Indexed(unique = true)
+    String authId;
+
     String email;
-
-    @Indexed(unique = true)
-    String username;
-
-    ClientData clientData;
 
     public String getId() {
         return id;
@@ -27,33 +23,20 @@ public class Client { //password encrypted
         this.id = id;
     }
 
+    public String getAuthId() {
+        return authId;
+    }
+
+    public void setAuthId(String authId) {
+        this.authId = authId;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public ClientData getClientData() {
-        return clientData;
-    }
-
-    public void setClientData(ClientData clientData) {
-        this.clientData = clientData;
-    }
-
-    public void update(Client client){
-        if(client.getClientData() != null)
-            clientData = client.getClientData();
     }
 }
 
