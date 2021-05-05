@@ -157,3 +157,9 @@ input[type=date]:focus::-webkit-datetime-edit {
   color: #222222 !important;
 }
 
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}

@@ -4,10 +4,24 @@
   <div class="navigation-bar">
     <div class="navigation-bar-inside">
       <ul class="itemList">
-        <div class="homeBtn"> <a target="_self" class="itemsList_a" routerLink="/">Home</a></div>
-        <a target="_self" class="itemsList_a" routerLink="/login">Login</a>
-        <a target="_self" class="itemsList_a" routerLink="/register">Register</a>
-        <a target="_self" class="itemsList_a" routerLink="/about">About project</a>
+<!--        <div class="homeBtn"> <a target="_self" class="itemsList_a" routerLink="/">Home</a></div>-->
+<!--        <a target="_self" class="itemsList_a" routerLink="/login" *ngIf="auth.isAuthenticated$">Log in</a>-->
+<!--        <a target="_self" class="itemsList_a" routerLink="/register" *ngIf="auth.isAuthenticated$">Register</a>-->
+<!--        <a target="_self" class="itemsList_a" routerLink="/about" *ngIf="auth.isAuthenticated$">About project</a>-->
+<!--        <a target="_self" class="itemsList_a" routerLink="/profile" *ngIf="auth.isAuthenticated$">My profile</a>-->
+        <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+          <a target="_self" class="itemsList_a" routerLink="/addproduct">Add a product</a>
+          <a target="_self" class="itemsList_a" routerLink="/products">Market</a>
+          <a target="_self" class="itemsList_a" routerLink="/profile">My profile</a>
+          <a target="_self" class="itemsList_a" href="#" (click)="auth.logout({ returnTo: 'http://localhost:4200' })">Log out</a>
+        </ng-container>
+<!--        <a target="_self" class="itemsList_a" href="#" (click)="auth.logout({ returnTo: 'http://localhost:4200/' })" *ngIf="auth.isAuthenticated$">Log out</a>-->
+        <ng-template #loggedOut>
+          <div class="homeBtn"> <a target="_self" class="itemsList_a" routerLink="/">Home</a></div>
+          <a target="_self" class="itemsList_a" routerLink="/login">Sign in</a>
+          <a target="_self" class="itemsList_a" routerLink="/register">Sign up</a>
+          <a target="_self" class="itemsList_a" routerLink="/about">About project</a>
+        </ng-template>
       </ul>
     </div>
   </div>

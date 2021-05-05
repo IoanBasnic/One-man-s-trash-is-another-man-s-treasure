@@ -38,6 +38,12 @@ export class ProductComponent implements OnInit {
   searchText: string;
 
   ngOnInit(): void {
+    const header = document.querySelector('nav');
+    const sectionOne = document.querySelector('.wrapper');
+
+    header.classList.add('nav-noscroll');
+    header.classList.remove('.navigation');
+
   }
   createContent(): void {
     this.itemList.forEach((item) => {

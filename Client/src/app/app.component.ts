@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import { HostListener } from '@angular/core';
 import { OnInit } from '@angular/core';
+import {AuthService} from '@auth0/auth0-angular';
+import {DOCUMENT} from '@angular/common';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,7 +24,7 @@ export class AppComponent implements OnInit {
     { id: 19, name: 'Magma' , country: 'South Africa'},
     { id: 20, name: 'Tornado' , country: 'Sri Lanka'}
   ];
-  constructor() { }
+  constructor(@Inject(DOCUMENT) public document: Document, public auth: AuthService) {}
   ngOnInit(): void {
     const header = document.querySelector('nav');
     const sectionOne = document.querySelector('.wrapper');
