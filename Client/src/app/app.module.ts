@@ -63,7 +63,7 @@ const routes: Routes = [
     HttpClientModule,
     Ng2SearchPipeModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBy1gdsv2P7YTNarViq_y6pahztakVY_3o'
+      apiKey: 'abc'
     }),
     RouterModule.forRoot(routes),
     ReactiveFormsModule,
