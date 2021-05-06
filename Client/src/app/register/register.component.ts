@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
   user: User = new User();
   register: any;
   myForm: FormGroup;
-
+  profileJson;
   postData = {
   };
   url = GlobalConstants.apiURL + 'client';
@@ -44,22 +44,29 @@ export class RegisterComponent implements OnInit {
   }
 
   createUser(): void {
-    this.postData = {
-      username: this.myForm.getRawValue().username,
-      email: this.myForm.getRawValue().email,
-      password: this.myForm.getRawValue().password
-    };
-    // this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });
-    this.http.post(this.url, this.postData, {observe: 'response'}).subscribe(resp => {
-      console.log(resp.status);
-      if (resp.status === 200) {
-        alert('Congratulations, your account has been successfully created!');
-        window.location.href = '/login';
-      }
-      else {
-        alert('Error: ' + resp.status);
-      }
+    console.log(this.auth);
+    this.auth.user$.subscribe((profile) => {
+      this.profileJson = JSON.parse(JSON.stringify(profile, null, 2));
+      console.log(this.profileJson);
+      //this.http.post(this.url, this.profileJson.sub).toPromise().then(data => {console.log(data); });
     });
+    window.location.replace('localhost:4200');
+    // this.postData = {
+    //   username: this.myForm.getRawValue().username,
+    //   email: this.myForm.getRawValue().email,
+    //   password: this.myForm.getRawValue().password
+    // };
+    // // this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });
+    // this.http.post(this.url, this.postData, {observe: 'response'}).subscribe(resp => {
+    //   console.log(resp.status);
+    //   if (resp.status === 200) {
+    //     alert('Congratulations, your account has been successfully created!');
+    //     window.location.href = '/login';
+    //   }
+    //   else {
+    //     alert('Error: ' + resp.status);
+    //   }
+    // });
   }
 }
 

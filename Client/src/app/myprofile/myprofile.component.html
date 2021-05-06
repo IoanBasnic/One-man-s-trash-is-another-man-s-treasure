@@ -19,9 +19,11 @@
         <agm-map [latitude]="lat" [longitude]="lng">
           <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
         </agm-map>
-        <p>{{user.address}} <button onclick="document.getElementById('idAddress').style.display='block'">Edit</button> </p>
+        <p>{{user.address}}<button onclick="document.getElementById('idAddress').style.display='block'">Edit</button> </p>
         <h2>Phone Number:</h2>
         <p>{{user.phoneNumber}} <button onclick="document.getElementById('idPhoneNumber').style.display='block'">Edit</button> </p>
+        <h2>Payment method:</h2>
+        <p>{{user.paymentMethod}} <button onclick="document.getElementById('idPaymentMethod').style.display='block'">Edit</button> </p>
       </div>
 
     </div>
@@ -36,6 +38,24 @@
   </div>
 </div>
 
+<!--<div id="idAddress" class="modal">-->
+
+<!--  <form class="modal-content animate">-->
+<!--    <div class="imgcontainer">-->
+<!--      <span onclick="document.getElementById('idAddress').style.display='none'" class="close" title="Close Modal">&times;</span>-->
+<!--    </div>-->
+
+<!--    <div class="container">-->
+<!--      <label ><b>New Address:</b></label>-->
+<!--      <input type="text" placeholder="New address" name="uname" required>-->
+<!--      <button class="btn" type="submit">Edit address</button>-->
+
+<!--    </div>-->
+
+
+<!--  </form>-->
+<!--</div>-->
+
 <div id="idAddress" class="modal">
 
   <form class="modal-content animate">
@@ -44,16 +64,17 @@
     </div>
 
     <div class="container">
-      <label ><b>New Address:</b></label>
-      <input type="text" placeholder="New address" name="uname" required>
-      <button class="btn" type="submit">Edit address</button>
+      <label></label>
+      <agm-map [latitude]="lat" [longitude]="lng" (mapClick)="selectLocation($event)">
+        <agm-marker [latitude]="lat" [longitude]="lng" ></agm-marker>
+      </agm-map>
+      <button class="btn" type="submit" >Edit address</button>
 
     </div>
 
 
   </form>
 </div>
-
 
 <div id="idPhoneNumber" class="modal">
 
@@ -66,6 +87,30 @@
       <label ><b>New Phone Number:</b></label>
       <input type="text" placeholder="New phone number" name="uname" required>
       <button class="btn" type="submit">Edit Phone Number</button>
+
+    </div>
+
+
+  </form>
+</div>
+
+<div id="idPaymentMethod" class="modal">
+
+  <form class="modal-content animate">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('idPaymentMethod').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+
+    <div class="container">
+      <label ><b>Choose a new payment method:</b></label>
+      <select id="selectbox2">
+        <option value="pt_1">CASH</option>
+        <option value="en_2">CHECK</option>
+        <option value="es_3">BITCOIN</option>
+        <option value="ch_4">CREDIT</option>
+        <option value="5">DEBIT</option>
+      </select>
+      <button class="btn" type="submit">Edit Payment method</button>
 
     </div>
 
