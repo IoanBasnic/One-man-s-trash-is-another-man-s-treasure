@@ -11,17 +11,18 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class LoginComponent implements OnInit {
 
+
+  constructor(public auth: AuthService, private fb: FormBuilder, private http: HttpClient) {
+    // this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });
+  }
+
   myForm: FormGroup;
 
   postData = {
   };
 
   url = GlobalConstants.apiURL + 'client/login';
-
-
-  constructor(public auth: AuthService, private fb: FormBuilder, private http: HttpClient) {
-    // this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });
-  }
+  profileJson;
 
   ngOnInit(): void {
     const header = document.querySelector('nav');
@@ -33,23 +34,26 @@ export class LoginComponent implements OnInit {
     this.myForm = this.fb.group({username: '', password: ''});
     this.myForm.valueChanges.subscribe(console.log);
   }
-
   loginClient(): void {
-    this.postData = {
-      username: this.myForm.getRawValue().username,
-      email: this.myForm.getRawValue().email,
-      password: this.myForm.getRawValue().password
-    };
-    // this.http.post(this.url, 200, {observe: 'response'}).subscribe(resp => {
-     //   console.log(resp);
-     // });
-    this.http.post(this.url, this.postData, {observe: 'response'}).subscribe(resp => {
-      if (resp.status === 200) {
-        window.location.href = '/profile';
-      }
-      else {
-        alert('Error: ' + resp.status);
-      }
-     });
+    this.auth.user$.subscribe((profile) => {
+      this.profileJson = JSON.parse(JSON.stringify(profile, null, 2));
+     // this.http.post(this.url, this.profileJson.sub).toPromise().then(data => {console.log(data); });
+    });
+    // this.postData = {
+    //   username: this.myForm.getRawValue().username,
+    //   email: this.myForm.getRawValue().email,
+    //   password: this.myForm.getRawValue().password
+    // };
+    // // this.http.post(this.url, 200, {observe: 'response'}).subscribe(resp => {
+    //  //   console.log(resp);
+    //  // });
+    // this.http.post(this.url, this.postData, {observe: 'response'}).subscribe(resp => {
+    //   if (resp.status === 200) {
+    //     window.location.href = '/profile';
+    //   }
+    //   else {
+    //     alert('Error: ' + resp.status);
+    //   }
+    //  });
   }
 }
