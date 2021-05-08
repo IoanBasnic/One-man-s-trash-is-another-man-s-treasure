@@ -31,11 +31,11 @@ export class AddproductComponent implements OnInit {
 
   addProduct(): void {
     this.postData = {
-      clientID: this.profileJson.sub,
+      clientId: this.profileJson.sub,
       image: this.myForm.value.productImage,
-      name: this.myForm.getRawValue().productName,
-      desc: this.myForm.getRawValue().productDescription,
-      price: this.myForm.getRawValue().productPrice
+      title: this.myForm.getRawValue().productName,
+      description: this.myForm.getRawValue().productDescription,
+      askingPrice: this.myForm.getRawValue().productPrice
     };
     console.log(this.postData);
     this.http.post(this.url, this.postData).toPromise().then(data => {console.log(data); });

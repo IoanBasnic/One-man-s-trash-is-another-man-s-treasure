@@ -38,22 +38,21 @@ export class AppComponent implements OnInit {
     header.classList.add('nav-noscroll');
     header.classList.remove('.navigation');
     // tslint:disable-next-line:triple-equals
-    if (this.auth != null) {
-      this.auth.user$.subscribe((profile) => {
-        this.profileJson = JSON.parse(JSON.stringify(profile, null, 2));
-        if (this.profileJson === null) {}
-        else {
-          this.postData = {
-            email: this.profileJson.email,
-            userID: this.profileJson.sub
-          };
-          console.log(this.postData);
-          this.http.post(this.url, this.profileJson.sub).toPromise().then(data => {
-            console.log(data);
-          });
-        }
-      });
-    }
+    // if (this.auth != null) {
+    //   this.auth.user$.subscribe((profile) => {
+    //     this.profileJson = JSON.parse(JSON.stringify(profile, null, 2));
+    //     if (this.profileJson === null) {}
+    //     else {
+    //       this.postData = {
+    //         email: this.profileJson.email,
+    //         userID: this.profileJson.sub
+    //       };
+    //       this.http.post(this.url, this.profileJson.sub).toPromise().then(data => {
+    //         console.log(data);
+    //       });
+    //     }
+    //   });
+    // }
 
 
 

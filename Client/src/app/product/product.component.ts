@@ -77,7 +77,8 @@ export class ProductComponent implements OnInit {
       // @ts-ignore
       desc.appendChild(textDesc);
       price.appendChild(textPrice);
-
+      img.src = item.image;
+      node.appendChild(img);
       node.appendChild(title);
       node.appendChild(desc);
       node.appendChild(price);
