@@ -3,6 +3,7 @@ package com.example.demo.Security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
@@ -35,10 +36,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/").permitAll()
-//                .mvcMatchers("/client").authenticated()
-//                .mvcMatchers("/product").authenticated()
-//                .mvcMatchers("/api/private-scoped").hasAuthority("SCOPE_read:messages")
+                .mvcMatchers(HttpMethod.GET, "/client").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/client").authenticated()
+                .mvcMatchers(HttpMethod.PUT, "/client").authenticated()
+                .mvcMatchers(HttpMethod.DELETE, "/client").authenticated()
+                .mvcMatchers(HttpMethod.GET, "/product").permitAll()
+                .mvcMatchers(HttpMethod.POST, "/product").authenticated()
+                .mvcMatchers(HttpMethod.DELETE, "/product").authenticated()
+                .mvcMatchers("/api/private-scoped").hasAuthority("SCOPE_read:messages")
                 .and().cors()
                 .and().oauth2ResourceServer().jwt();
         http.csrf().disable();

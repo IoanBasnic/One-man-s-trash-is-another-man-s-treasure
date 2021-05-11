@@ -26,7 +26,7 @@ public class ProductController {
     
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ResponseEntity add(@RequestBody Product product) {
+    public ResponseEntity add(@RequestBody String clientToken, Product product) {
         System.out.println(product);
         Optional<Client> foundClient = clientRepository.findById(product.getClientId());
         Product savedProduct;
