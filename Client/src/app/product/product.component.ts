@@ -2,18 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import {GlobalConstants} from '../../common/global-constants';
 import {FormBuilder} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-
+import {AppModule} from '../app.module';
+import { Injectable } from '@angular/core';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css']
 })
+@Injectable({
+  providedIn: 'root',
+})
 export class ProductComponent implements OnInit {
-
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  private product: GlobalConstants;
+  constructor(private fb: FormBuilder, private http: HttpClient, private products: GlobalConstants) {
     this.http.get(this.url, {responseType: 'json'}).subscribe(responseData => {
       this.itemList = responseData;
       console.log(this.itemList);
+      this.product = this.products;
       this.createContent();
     });
   }
@@ -58,8 +63,13 @@ export class ProductComponent implements OnInit {
       const textTitle = document.createTextNode('Title: ' + item.title);
       const textDesc = document.createTextNode('Description: ' + item.description);
       moreInfoBtn.append('For more info, click here!');
-      moreInfoBtn.href = '/products/' + item.id;
-
+      moreInfoBtn.href = '/products/view/';
+      // tslint:disable-next-line:typedef
+      moreInfoBtn.onclick = function onClickFunction() {
+        console.log(item);
+        localStorage.clear();
+        localStorage.setItem('productID', item.id);
+      };
       node.id = item.id;
       node.className = 'grid' + ' ';
       // @ts-ignore
@@ -67,7 +77,8 @@ export class ProductComponent implements OnInit {
       // @ts-ignore
       desc.appendChild(textDesc);
       price.appendChild(textPrice);
-
+      img.src = item.image;
+      node.appendChild(img);
       node.appendChild(title);
       node.appendChild(desc);
       node.appendChild(price);

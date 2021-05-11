@@ -23,9 +23,11 @@ public class ProductController {
     @Autowired
     private ClientRepository clientRepository;
 
-    @PostMapping
+    
+    @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity add(@RequestBody Product product) {
+        System.out.println(product);
         Optional<Client> foundClient = clientRepository.findById(product.getClientId());
         Product savedProduct;
 
@@ -39,6 +41,7 @@ public class ProductController {
         }
         return ResponseEntity.status(404).body("{ \"message\": \"client id not found\"}");
     }
+
 
     @DeleteMapping
     @ResponseBody
