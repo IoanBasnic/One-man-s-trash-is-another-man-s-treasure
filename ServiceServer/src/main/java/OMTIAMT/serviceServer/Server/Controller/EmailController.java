@@ -29,12 +29,12 @@ public class EmailController {
     @Autowired
     private EmailService emailService;
 
-    @GetMapping(value = "/sendmail")
-    @ResponseBody
-    public ResponseEntity<Object> sendmail(@RequestParam String id) throws Exception {
+    @GetMapping("/sendmail/{id}")
+    public ResponseEntity<Object> sendmail(@PathVariable String id) throws Exception {
         Optional<Client> cl = clientRepository.findById(id);
 
         if (cl.isPresent()){
+            System.out.println("client exists");
             Mail mail = new EmailBuilder()
                     .To(cl.get().getEmail())
                     .Template("mail-template.html")
