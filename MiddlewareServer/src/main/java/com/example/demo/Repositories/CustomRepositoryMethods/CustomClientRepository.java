@@ -9,6 +9,6 @@ public interface CustomClientRepository {
     @Query("{email:'?0'}")
     Optional<Client> findByEmail(String email);
 
-    @Query("{username:'?0'}")
-    Optional<Client> findByUsername(String username);
+    @Query("{authId:'?0'}")
+    Optional<Client> findByAuthId(String authId);
 }
