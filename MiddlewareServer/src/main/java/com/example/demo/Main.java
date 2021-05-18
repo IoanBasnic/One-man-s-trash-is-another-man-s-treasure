@@ -1,11 +1,7 @@
 package com.example.demo;
 
-import com.mongodb.client.MongoClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.BufferedReader;
@@ -23,27 +19,27 @@ public class Main {
 		SpringApplication.run(Main.class, args);
 
 		String hostname = "localhost";
-		int port = 6868;
+		int port = 8080;
 
-
-		try (Socket socket = new Socket(hostname, port)) {
-
-			InputStream input = socket.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-
-			String time = reader.readLine();
-
-			System.out.println(time);
-
-
-		} catch (UnknownHostException ex) {
-
-			System.out.println("Server not found: " + ex.getMessage());
-
-		} catch (IOException ex) {
-
-			System.out.println("I/O error: " + ex.getMessage());
-		}
+//
+//		try (Socket socket = new Socket(hostname, port)) {
+//
+//			InputStream input = socket.getInputStream();
+//			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+//
+//			String time = reader.readLine();
+//
+//			System.out.println(time);
+//
+//
+//		} catch (UnknownHostException ex) {
+//
+//			System.out.println("Server not found: " + ex.getMessage());
+//
+//		} catch (IOException ex) {
+//
+//			System.out.println("I/O error: " + ex.getMessage());
+//		}
 	}
 
 }
