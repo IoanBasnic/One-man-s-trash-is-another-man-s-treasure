@@ -1,6 +1,7 @@
 package com.example.demo.DataModels.client;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
@@ -9,7 +10,10 @@ import java.util.Objects;
 @Document(collection = "client")
 public class Client {
     @Id
-    String authId;
+    String id;
+
+    @Indexed(unique = true)
+    String AuthId;
 
     String email;
 
@@ -25,12 +29,12 @@ public class Client {
 
     PaymentMethod paymentMethod;
 
-    public String getAuthId() {
-        return authId;
+    public String getId() {
+        return id;
     }
 
-    public void setAuthId(String authId) {
-        this.authId = authId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -89,12 +93,36 @@ public class Client {
         this.paymentMethod = paymentMethod;
     }
 
+    public String getAuthId() {
+        return AuthId;
+    }
+
+    public void setAuthId(String authId) {
+        AuthId = authId;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id='" + id + '\'' +
+                ", AuthId='" + AuthId + '\'' +
+                ", email='" + email + '\'' +
+                ", givenName='" + givenName + '\'' +
+                ", familyName='" + familyName + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", Address='" + Address + '\'' +
+                ", paymentMethod=" + paymentMethod +
+                '}';
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return authId.equals(client.authId) &&
+        return id.equals(client.id) &&
+                AuthId.equals(client.AuthId) &&
                 email.equals(client.email) &&
                 Objects.equals(givenName, client.givenName) &&
                 Objects.equals(familyName, client.familyName) &&
@@ -106,7 +134,7 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return Objects.hash(authId, email, givenName, familyName, nickname, phoneNumber, Address, paymentMethod);
+        return Objects.hash(id, AuthId, email, givenName, familyName, nickname, phoneNumber, Address, paymentMethod);
     }
 
     enum PaymentMethod{

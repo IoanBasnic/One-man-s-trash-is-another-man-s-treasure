@@ -9,12 +9,15 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>OMTIAMT.serviceServer</groupId>
-	<artifactId>Server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Service Server</name>
+	<artifactId>service</artifactId>
+	<version>0.0.1</version>
+	<name>service</name>
 	<description>A Java server for services</description>
 	<properties>
-		<java.version>15</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.release>11</maven.compiler.release>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -93,6 +96,12 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -100,6 +109,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<configuration>
+							<mainClass>OMTIAMT.serviceServer.Server.ServiceServerApplication</mainClass>
+						</configuration>
+					</execution>
+				</executions>
 				<configuration>
 					<excludes>
 						<exclude>
@@ -107,6 +123,20 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<executable>true</executable>
+					<jvmArguments>
+						-Xms256m
+						-Xmx512m
+					</jvmArguments>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<release>11</release>
 				</configuration>
 			</plugin>
 		</plugins>

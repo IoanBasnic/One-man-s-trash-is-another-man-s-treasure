@@ -2,8 +2,11 @@ package com.example.demo.ServiceControllers;
 
 import com.example.demo.DataModels.product.Product;
 import com.example.demo.DataModels.client.Client;
+import com.example.demo.HttpUtils.Auth0Utils;
 import com.example.demo.Repositories.ClientRepository;
 import com.example.demo.Repositories.ProductRepository;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,8 @@ import java.util.Optional;
 @RequestMapping("/product")
 public class ProductController {
 
+    private Auth0Utils auth0Utils = new Auth0Utils();
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -26,8 +31,23 @@ public class ProductController {
     
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ResponseEntity add(@RequestBody String clientToken, Product product) {
-        System.out.println(product);
+    public ResponseEntity add(@RequestBody String data) {
+        JsonObject dataJson = (JsonObject) JsonParser.parseString(data);
+        String clientToken = dataJson.get("clientToken").getAsString();
+        JsonObject productJson = dataJson.get("product").getAsJsonObject();
+
+        JsonObject userInfo = auth0Utils.getUserInfo(clientToken);
+        productJson.addProperty("clientId", userInfo.get("sub").getAsString());
+
+        Product product = new Product();
+        product.jsonToProduct(productJson);
+
+        Optional<Client> existingClient = clientRepository.findById(userInfo.get("sub").getAsString());
+
+        if(existingClient.isEmpty())
+            return ResponseEntity.status(404).body("{ \"message\": \"client not found\"}");
+
+
         Optional<Client> foundClient = clientRepository.findById(product.getClientId());
         Product savedProduct;
 
@@ -45,7 +65,7 @@ public class ProductController {
 
     @DeleteMapping
     @ResponseBody
-    public ResponseEntity add(@RequestParam String productid) {
+    public ResponseEntity delete(@RequestParam String productid) {
         Optional<Product> productToDelete = productRepository.findById(productid);
 
         if(productToDelete.isPresent()) {

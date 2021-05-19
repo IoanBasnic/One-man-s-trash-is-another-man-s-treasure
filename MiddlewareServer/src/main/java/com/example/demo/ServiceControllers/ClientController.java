@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import com.example.demo.HttpUtils.Auth0Utils;
+import org.springframework.web.client.RestTemplate;
 
 
 @CrossOrigin(maxAge = 3600)
@@ -28,18 +29,27 @@ public class ClientController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity add(@RequestBody String clientToken) throws IOException, InterruptedException {
         JsonObject userInfo = auth0Utils.getUserInfo(clientToken);
-
         if(userInfo.has("error"))
             return ResponseEntity.status(500).body(userInfo.get("error"));
 
-        Optional<Client> existingClient = clientRepository.findById(userInfo.get("sub").toString());
+        Optional<Client> existingClient = clientRepository.findByAuthId(userInfo.get("sub").getAsString());
 
         if(existingClient.isEmpty()) {
             Client savedClient = new Client();
 
             try {
+                System.out.println(savedClient.toString());
                 createClient(savedClient, userInfo);
+                System.out.println(savedClient.toString());
                 clientRepository.save(savedClient);
+
+                System.out.println("got saved");
+                if (checkEmailValidity(savedClient.getEmail(), userInfo.get("email_verified").getAsBoolean())) {
+                    final String uri = "http://localhost:6868/register/sendmail/" + savedClient.getId();
+
+                    RestTemplate restTemplate = new RestTemplate();
+                    String result = restTemplate.getForObject(uri, String.class);
+                }
             } catch (DuplicateKeyException e) {
                 return ResponseEntity.status(400).body("{ \"message\": \"duplicate value\"}");
             } catch (Exception e) {
@@ -56,16 +66,21 @@ public class ClientController {
     }
 
     @PutMapping
-    public ResponseEntity addAdditionalValues(@RequestBody String clientToken, String additionalInfo) throws IOException, InterruptedException {
+    public ResponseEntity addAdditionalValues(@RequestBody String data) throws IOException, InterruptedException {
+        //data == clientToken + additionalInfo
+        JsonObject dataJson = (JsonObject) JsonParser.parseString(data);
+        String clientToken = dataJson.get("clientToken").getAsString();
+        JsonObject additionalInfo = dataJson.get("additionalInfo").getAsJsonObject();
+
         JsonObject userInfo = auth0Utils.getUserInfo(clientToken);
-        Optional<Client> existingClient = clientRepository.findById(userInfo.get("sub").toString());
+        Optional<Client> existingClient = clientRepository.findByAuthId(userInfo.get("sub").getAsString());
+
 
         if(existingClient.isEmpty())
             return ResponseEntity.status(404).body("{ \"message\": \"client not found\"}");
 
-        JsonObject json = (JsonObject) JsonParser.parseString(additionalInfo);
         Client client = existingClient.get();
-        updateClientAdditionalValues(client, json);
+        updateClientAdditionalValues(client, additionalInfo);
 
         try {
             clientRepository.save(client);
@@ -114,40 +129,40 @@ public class ClientController {
     }
 
     private void createClient(Client savedClient, JsonObject userInfo){
-        savedClient.setEmail(userInfo.get("email").toString());
-        savedClient.setAuthId(userInfo.get("sub").toString());
+        savedClient.setEmail(userInfo.get("email").getAsString());
+        savedClient.setAuthId(userInfo.get("sub").getAsString());
 
         if(userInfo.has("given_name"))
-            savedClient.setGivenName(userInfo.get("given_name").toString());
+            savedClient.setGivenName(userInfo.get("given_name").getAsString());
 
         if(userInfo.has("family_name"))
-            savedClient.setFamilyName(userInfo.get("family_name").toString());
+            savedClient.setFamilyName(userInfo.get("family_name").getAsString());
 
         if(userInfo.has("nickname"))
-            savedClient.setNickname(userInfo.get("nickname").toString());
+            savedClient.setNickname(userInfo.get("nickname").getAsString());
     }
 
     private void updateClient(Client existingClient, JsonObject userInfo){
         if(userInfo.has("given_name")){
-            existingClient.setGivenName(userInfo.get("given_name").toString());
+            existingClient.setGivenName(userInfo.get("given_name").getAsString());
         }
         if(userInfo.has("family_name")){
-            existingClient.setFamilyName(userInfo.get("family_name").toString());
+            existingClient.setFamilyName(userInfo.get("family_name").getAsString());
         }
         if(userInfo.has("nickname")){
-            existingClient.setNickname(userInfo.get("nickname").toString());
+            existingClient.setNickname(userInfo.get("nickname").getAsString());
         }
     }
 
     private void updateClientAdditionalValues(Client client, JsonObject additionalInfo){
         if(additionalInfo.has("phone_number")){
-            client.setPhoneNumber(additionalInfo.get("phone_number").toString());
+            client.setPhoneNumber(additionalInfo.get("phone_number").getAsString());
         }
         if(additionalInfo.has("address")){
-            client.setAddress(additionalInfo.get("address").toString());
+            client.setAddress(additionalInfo.get("address").getAsString());
         }
         if(additionalInfo.has("payment_method")){
-            client.mapToPaymentMethod(additionalInfo.get("payment_method").toString());
+            client.mapToPaymentMethod(additionalInfo.get("payment_method").getAsString());
         }
     }
 }
