@@ -1,6 +1,7 @@
 package com.example.demo.ServiceControllers;
 
 import com.example.demo.DataModels.client.Client;
+import com.example.demo.DataModels.client.Coordinates;
 import com.example.demo.Repositories.ClientRepository;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -36,7 +37,6 @@ public class ClientController {
 
         if(existingClient.isEmpty()) {
             Client savedClient = new Client();
-
             try {
                 System.out.println(savedClient.toString());
                 createClient(savedClient, userInfo);
@@ -45,7 +45,7 @@ public class ClientController {
 
                 System.out.println("got saved");
                 if (checkEmailValidity(savedClient.getEmail(), userInfo.get("email_verified").getAsBoolean())) {
-                    final String uri = "http://localhost:6868/register/sendmail/" + savedClient.getId();
+                    final String uri = "http://18.197.177.146:6868/register/sendmail/" + savedClient.getId();
 
                     RestTemplate restTemplate = new RestTemplate();
                     String result = restTemplate.getForObject(uri, String.class);
@@ -92,9 +92,9 @@ public class ClientController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getClientById(@PathVariable String id) {
-        return new ResponseEntity<>(clientRepository.findById(id), HttpStatus.OK);
+    @GetMapping("/{token}")
+    public ResponseEntity<Object> getClientByToken(@PathVariable String token) {
+        return new ResponseEntity<>(clientRepository.findByAuthId(token), HttpStatus.OK);
     }
 
 
@@ -130,6 +130,7 @@ public class ClientController {
 
     private void createClient(Client savedClient, JsonObject userInfo){
         savedClient.setEmail(userInfo.get("email").getAsString());
+        System.out.println(userInfo.get("sub").getAsString());
         savedClient.setAuthId(userInfo.get("sub").getAsString());
 
         if(userInfo.has("given_name"))
@@ -163,6 +164,11 @@ public class ClientController {
         }
         if(additionalInfo.has("payment_method")){
             client.mapToPaymentMethod(additionalInfo.get("payment_method").getAsString());
+        }
+        if(additionalInfo.has("coordinates")){
+            JsonObject coordinates = additionalInfo.get("coordinated").getAsJsonObject();
+            if(coordinates.has("lat") && coordinates.has("lng"))
+                client.setCoordinates(new Coordinates(coordinates.get("lat").getAsFloat(), coordinates.get("lng").getAsFloat()));
         }
     }
 }

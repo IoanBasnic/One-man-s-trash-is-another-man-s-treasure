@@ -13,7 +13,7 @@ public class Client {
     String id;
 
     @Indexed(unique = true)
-    String AuthId;
+    String authId;
 
     String email;
 
@@ -28,6 +28,8 @@ public class Client {
     String Address;
 
     PaymentMethod paymentMethod;
+
+    Coordinates coordinates;
 
     public String getId() {
         return id;
@@ -94,18 +96,18 @@ public class Client {
     }
 
     public String getAuthId() {
-        return AuthId;
+        return authId;
     }
 
     public void setAuthId(String authId) {
-        AuthId = authId;
+        this.authId = authId;
     }
 
     @Override
     public String toString() {
         return "Client{" +
                 "id='" + id + '\'' +
-                ", AuthId='" + AuthId + '\'' +
+                ", AuthId='" + authId + '\'' +
                 ", email='" + email + '\'' +
                 ", givenName='" + givenName + '\'' +
                 ", familyName='" + familyName + '\'' +
@@ -122,7 +124,7 @@ public class Client {
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
         return id.equals(client.id) &&
-                AuthId.equals(client.AuthId) &&
+                authId.equals(client.authId) &&
                 email.equals(client.email) &&
                 Objects.equals(givenName, client.givenName) &&
                 Objects.equals(familyName, client.familyName) &&
@@ -134,7 +136,15 @@ public class Client {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, AuthId, email, givenName, familyName, nickname, phoneNumber, Address, paymentMethod);
+        return Objects.hash(id, authId, email, givenName, familyName, nickname, phoneNumber, Address, paymentMethod);
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     enum PaymentMethod{
@@ -143,6 +153,7 @@ public class Client {
         PAYPAL,
         OTHER
     }
+
 
     public void mapToPaymentMethod(String paymentMethod){
         if(paymentMethod.equals("cash") || paymentMethod.equals("CASH") || paymentMethod.equals("Cash"))
@@ -158,4 +169,5 @@ public class Client {
     }
 
 }
+
 

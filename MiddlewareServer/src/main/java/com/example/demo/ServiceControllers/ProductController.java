@@ -27,7 +27,6 @@ public class ProductController {
 
     @Autowired
     private ClientRepository clientRepository;
-
     
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -42,7 +41,8 @@ public class ProductController {
         Product product = new Product();
         product.jsonToProduct(productJson);
 
-        Optional<Client> existingClient = clientRepository.findById(userInfo.get("sub").getAsString());
+        System.out.println(userInfo.get("sub").getAsString());
+        Optional<Client> existingClient = clientRepository.findByAuthId(userInfo.get("sub").getAsString());
 
         if(existingClient.isEmpty())
             return ResponseEntity.status(404).body("{ \"message\": \"client not found\"}");
@@ -90,8 +90,28 @@ public class ProductController {
         return new ResponseEntity<>(productRepository.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(params = "clientid")
-    public ResponseEntity<Object> getProductsByClientId(@RequestParam("clientid") String clientId) {
+    @GetMapping("/clientid/{id}")
+    public ResponseEntity getClientByProductId(@PathVariable String id) {
+        Optional<Product> product = productRepository.findById(id);
+        Optional<Client> client;
+        Product gotProduct;
+
+        if (product.isPresent()) {
+            gotProduct = product.get();
+            client = clientRepository.findById(gotProduct.getClientId());
+
+            if (client.isPresent()) {
+                return new ResponseEntity(client, HttpStatus.OK);
+            } else
+                return ResponseEntity.status(404).body("{ \"message\": \"client with id: " + gotProduct.getClientId() + " not found\"}");
+
+        }
+        return ResponseEntity.status(404).body("{ \"message\": \"product with id: " + id + " not found\"}");
+    }
+
+    //TODO: implement
+    @GetMapping(params = "clientToken")
+    public ResponseEntity<Object> getProductsByClientToken(@RequestParam("clientid") String clientId) {
         List<Product> products = productRepository.findByClientId(clientId);
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
