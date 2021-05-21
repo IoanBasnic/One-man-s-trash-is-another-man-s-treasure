@@ -20,6 +20,8 @@ public class Product {
 
     String image;
 
+    Category category;
+
     public String getId() {
         return id;
     }
@@ -73,6 +75,48 @@ public class Product {
         this.askingPrice = productJson.get("askingPrice").getAsFloat();
         this.description = productJson.get("description").getAsString();
         this.title = productJson.get("title").getAsString();
-        this.image = productJson.get("image").getAsString();
+
+        String c = productJson.get("category").getAsString();
+        if(c.equals("electronics"))
+            this.category = Category.ELECTRONICS;
+        else if(c.equals("books"))
+            this.category = Category.BOOKS;
+        else if(c.equals("electronic_games"))
+            this.category = Category.ELECTRONIC_GAMES;
+        else if(c.equals("recreation"))
+            this.category = Category.RECREATION;
+        else if(c.equals("fashion"))
+            this.category = Category.FASHION;
+        else if(c.equals("cosmetics"))
+            this.category = Category.COSMETICS;
+        else if(c.equals("house_stuff"))
+            this.category = Category.HOUSE_STUFF;
+        else if(c.equals("sports"))
+            this.category = Category.SPORTS;
+        else if(c.equals("auto"))
+            this.category = Category.AUTO;
+        else if(c.equals("kids"))
+            this.category = Category.KIDS;
+        else if(c.equals("supermarket"))
+            this.category = Category.SUPERMARKET;
+        else
+            this.category = Category.OTHER;
+
+
+    }
+
+    enum Category{
+        ELECTRONICS,
+        BOOKS,
+        ELECTRONIC_GAMES,
+        RECREATION,
+        FASHION,
+        COSMETICS,
+        HOUSE_STUFF,
+        SPORTS,
+        AUTO,
+        KIDS,
+        SUPERMARKET,
+        OTHER
     }
 }

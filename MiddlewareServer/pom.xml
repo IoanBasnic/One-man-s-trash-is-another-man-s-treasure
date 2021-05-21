@@ -110,13 +110,6 @@
 						</configuration>
 					</execution>
 				</executions>
-				<configuration>
-					<executable>true</executable>
-					<jvmArguments>
-						-Xms256m
-						-Xmx512m
-					</jvmArguments>
-				</configuration>
 			</plugin>
 
 			<plugin>

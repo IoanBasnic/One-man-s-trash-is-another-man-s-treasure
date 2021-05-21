@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Null;
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +29,6 @@ public class ProductController {
 
     @Autowired
     private ClientRepository clientRepository;
-
     
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -42,24 +43,24 @@ public class ProductController {
         Product product = new Product();
         product.jsonToProduct(productJson);
 
-        Optional<Client> existingClient = clientRepository.findById(userInfo.get("sub").getAsString());
+        Optional<Client> existingClient;
+        try {
+            existingClient = clientRepository.findByAuthId(userInfo.get("sub").getAsString());
+        } catch (NullPointerException e){
+            return ResponseEntity.status(404).body("{ \"message\": \"invalid client token\"}");
+        }
 
         if(existingClient.isEmpty())
             return ResponseEntity.status(404).body("{ \"message\": \"client not found\"}");
 
-
-        Optional<Client> foundClient = clientRepository.findById(product.getClientId());
         Product savedProduct;
 
-        if(foundClient.isPresent()){
-            try {
-                savedProduct = productRepository.save(product);
-                return ResponseEntity.status(200).body(savedProduct);
-            } catch (Exception e){
-                return ResponseEntity.status(500).body(e);
-            }
+        try {
+            savedProduct = productRepository.save(product);
+            return ResponseEntity.status(200).body(savedProduct);
+        } catch (Exception e){
+            return ResponseEntity.status(500).body(e);
         }
-        return ResponseEntity.status(404).body("{ \"message\": \"client id not found\"}");
     }
 
 
@@ -90,9 +91,73 @@ public class ProductController {
         return new ResponseEntity<>(productRepository.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping(params = "clientid")
-    public ResponseEntity<Object> getProductsByClientId(@RequestParam("clientid") String clientId) {
+    @GetMapping("/clientid/{id}")
+    public ResponseEntity getClientByProductId(@PathVariable String id) {
+        Optional<Product> product = productRepository.findById(id);
+        Optional<Client> client;
+        Product gotProduct;
+
+        if (product.isPresent()) {
+            gotProduct = product.get();
+            client = clientRepository.findByAuthId(gotProduct.getClientId());
+
+            if (client.isPresent()) {
+                return new ResponseEntity(client, HttpStatus.OK);
+            } else
+                return ResponseEntity.status(404).body("{ \"message\": \"client with id: " + gotProduct.getClientId() + " not found\"}");
+
+        }
+        return ResponseEntity.status(404).body("{ \"message\": \"product with id: " + id + " not found\"}");
+    }
+
+    //TODO: implement
+    @GetMapping(params = "clientToken")
+    public ResponseEntity<Object> getProductsByClientToken(@RequestParam("clientid") String clientId) {
         List<Product> products = productRepository.findByClientId(clientId);
         return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    //checks if product with id productId exists for client with clientToken
+    @GetMapping(params = {"productId", "clientToken"})
+    public ResponseEntity<Object> productExistByTokenAndId(@PathParam("productId") String productId, String clientToken) {
+        JsonObject userInfo;
+        Optional<Client> client;
+        try {
+            userInfo = auth0Utils.getUserInfo(clientToken);
+            client = clientRepository.findByAuthId(userInfo.get("sub").getAsString());
+        } catch (NullPointerException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Optional<Product> product = productRepository.findById(productId);
+
+        if(client.isPresent() && product.isPresent()){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping(params = {"productId", "image"})
+    public ResponseEntity<Object> addImageToProduct(@PathParam("productId") String productId, String image) {
+        System.out.println(productId);
+        System.out.println(image);
+
+        Optional<Product> product = productRepository.findById(productId);
+
+        if(product.isPresent()){
+            Product gotProduct = product.get();
+            gotProduct.setImage(image);
+            productRepository.save(gotProduct);
+
+            try {
+                gotProduct = productRepository.save(gotProduct);
+                return ResponseEntity.status(200).body(gotProduct);
+            } catch (Exception e){
+                return ResponseEntity.status(500).body(e);
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
