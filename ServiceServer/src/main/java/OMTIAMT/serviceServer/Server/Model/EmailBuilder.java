@@ -80,6 +80,7 @@ public class EmailBuilder {
             throw new IllegalArgumentException("Missing mail headers");
         }
 
+
         //Build mail object
         Mail result = new Mail();
         result.setMailTo(this.mailTo);
