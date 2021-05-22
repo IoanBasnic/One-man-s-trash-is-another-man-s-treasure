@@ -44,6 +44,9 @@ public class EmailController {
                     .createMail();
             emailService.sendHTMLMail(mail);
         }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>(clientRepository.findById(id), HttpStatus.OK);
 
