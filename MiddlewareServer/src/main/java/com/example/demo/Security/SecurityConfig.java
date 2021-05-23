@@ -27,12 +27,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuer;
 
-    @Value(value = "${com.auth0.clientId}")
-    private String clientId;
-
-    @Value(value = "${com.auth0.clientSecret}")
-    private String clientSecret;
-
     @Bean
     JwtDecoder jwtDecoder() {
         OAuth2TokenValidator<Jwt> withAudience = new AudienceValidator(audience);

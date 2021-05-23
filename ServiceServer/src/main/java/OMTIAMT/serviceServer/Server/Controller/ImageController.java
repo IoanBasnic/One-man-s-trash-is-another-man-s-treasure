@@ -33,6 +33,8 @@ public class ImageController {
 
     @PostMapping("/uploadFile")
     public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
+        System.out.println("called endpoint");
+
         try {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             System.out.println(fileName);
@@ -63,7 +65,7 @@ public class ImageController {
         return new ByteArrayResource(bytes);
     }
 
-    @GetMapping(value="/checkProduct")
+    @PostMapping(value="/checkProduct")
     public ResponseEntity<Object> productExistById(@RequestBody String data){
 
         JsonObject dataJson = (JsonObject) JsonParser.parseString(data);
@@ -81,12 +83,12 @@ public class ImageController {
         return this.productId;
     }
 
-    @GetMapping(params = {"productId", "clientToken"})
-    public ResponseEntity<Object> productExistByTokenAndId(@PathParam("productId") String productId, String clientToken){
-
-        System.out.println(productId);
-        System.out.println(clientToken);
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+//    @GetMapping(params = {"productId", "clientToken"})
+//    public ResponseEntity<Object> productExistByTokenAndId(@PathParam("productId") String productId, String clientToken){
+//
+//        System.out.println(productId);
+//        System.out.println(clientToken);
+//
+//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//    }
 }

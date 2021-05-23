@@ -9,9 +9,14 @@ import org.springframework.util.MultiValueMap;
 
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpResponse;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,7 +60,7 @@ public class ImageService {
         RestTemplate restTemplate = new RestTemplate();
 
         try {
-            ResponseEntity responseEntity = restTemplate.postForObject(uri, vars, ResponseEntity.class);
+            ResponseEntity responseEntity = restTemplate.postForObject(uri, null,  ResponseEntity.class, vars);
 
         } catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
 
@@ -71,28 +76,40 @@ public class ImageService {
 
     public ResponseEntity<String> checkProduct(String productId, String clientToken){
 
-        final String uri = "https://www.covidtector.tk:8080/product?productId={id}";
+        final String uri = "https://www.covidtector.tk:8080/product?productId={id}&clientToken={token}";
         Map<String, String> vars = new HashMap<>();
         vars.put("id", productId);
+        vars.put("token", clientToken);
 
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(clientToken);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        //headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        HttpEntity entity = new HttpEntity(headers);
-        ResponseEntity responseEntity;
+        HttpEntity <HttpResponse> entity = new HttpEntity<HttpResponse>(headers);
 
         try {
-            responseEntity = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, vars);
-        } catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+//            System.out.println("Gonna try to apelate endpoint");
+//
+//            URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+//                    .path(uri)
+//                    .buildAndExpand(vars)
+//                    .toUri();
+//
+//            ResponseEntity.status(CREATED).header(HttpHeaders.AUTHORIZATION, clientToken).build();
 
-        if (HttpStatus.NOT_FOUND.equals(responseEntity.getStatusCode())) {
 
-            System.out.println("NOT FOUND");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ResponseEntity responseEntity = restTemplate.getForEntity(uri, String.class, vars);
+
+//            responseEntity = restTemplate.exchange(uri, HttpMethod.GET, entity, HttpResponse.class, vars);
+//            System.out.println("apelated endpoint");
+
+        }catch(HttpStatusCodeException e) {
+            System.out.println(e);
+            return ResponseEntity.status(e.getRawStatusCode()).headers(e.getResponseHeaders())
+                .body(e.getResponseBodyAsString());
         }
 
         return new ResponseEntity(HttpStatus.OK);

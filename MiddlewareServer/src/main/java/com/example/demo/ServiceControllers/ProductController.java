@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Optional;
@@ -152,15 +151,15 @@ public class ProductController {
     }
 
     //checks if product with id productId exists for client with clientToken
-    @GetMapping(params = {"productId"})
-    public ResponseEntity<Object> productExistByTokenAndId(@PathParam("productId") String productId, @RequestHeader HttpHeaders headers) {
+    @GetMapping(params = {"productId", "clientToken"})
+    public ResponseEntity<Object> productExistByTokenAndId(@PathParam("productId") String productId, String clientToken, @RequestHeader HttpHeaders headers) {
         System.out.println("Called: GET product{productId}");
 
-        if (!auth0Utils.checkIfAuthorized(headers)){
-            return ResponseEntity.status(401).body("{ \"message\": \"Unauthorized\"}");
-        }
+//        if (!auth0Utils.checkIfAuthorized(headers)){
+//            return ResponseEntity.status(401).body("{ \"message\": \"Unauthorized\"}");
+//        }
 
-        String clientToken = auth0Utils.getClientToken(headers);
+//        String clientToken = auth0Utils.getClientToken(headers);
 
         JsonObject userInfo;
         Optional<Client> client;
