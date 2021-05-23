@@ -31,6 +31,8 @@ public class Client {
 
     Coordinates coordinates;
 
+    Boolean emailVerified = false;
+
     public String getId() {
         return id;
     }
@@ -103,6 +105,22 @@ public class Client {
         this.authId = authId;
     }
 
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
+
     @Override
     public String toString() {
         return "Client{" +
@@ -139,18 +157,12 @@ public class Client {
         return Objects.hash(id, authId, email, givenName, familyName, nickname, phoneNumber, Address, paymentMethod);
     }
 
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
-    }
-
     enum PaymentMethod{
         CASH,
-        CARD,
-        PAYPAL,
+        CHECK,
+        BITCOIN,
+        CREDIT,
+        DEBIT,
         OTHER
     }
 
@@ -158,14 +170,16 @@ public class Client {
     public void mapToPaymentMethod(String paymentMethod){
         if(paymentMethod.equals("cash") || paymentMethod.equals("CASH") || paymentMethod.equals("Cash"))
             this.paymentMethod = PaymentMethod.CASH;
-
-        if(paymentMethod.equals("card") || paymentMethod.equals("CARD") || paymentMethod.equals("Card"))
-            this.paymentMethod = PaymentMethod.CARD;
-
-        if(paymentMethod.equals("paypal") || paymentMethod.equals("PAYPAL") || paymentMethod.equals("Paypal"))
-            this.paymentMethod = PaymentMethod.PAYPAL;
-
-        this.paymentMethod = PaymentMethod.OTHER;
+        else if(paymentMethod.equals("check") || paymentMethod.equals("CHECK") || paymentMethod.equals("Check"))
+            this.paymentMethod = PaymentMethod.CHECK;
+        else if(paymentMethod.equals("bitcoin") || paymentMethod.equals("BITCOIN") || paymentMethod.equals("Bitcoin"))
+            this.paymentMethod = PaymentMethod.BITCOIN;
+        else if(paymentMethod.equals("credit") || paymentMethod.equals("CREDIT") || paymentMethod.equals("Credit"))
+            this.paymentMethod = PaymentMethod.CREDIT;
+        else if(paymentMethod.equals("debit") || paymentMethod.equals("DEBIT") || paymentMethod.equals("Debit"))
+            this.paymentMethod = PaymentMethod.DEBIT;
+        else
+            this.paymentMethod = PaymentMethod.OTHER;
     }
 
 }
