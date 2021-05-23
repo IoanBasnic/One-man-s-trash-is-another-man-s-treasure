@@ -1,5 +1,6 @@
 package com.example.demo.ServiceControllers;
 
+import com.example.demo.ControllerConfigurations;
 import com.example.demo.DataModels.product.Product;
 import com.example.demo.DataModels.client.Client;
 import com.example.demo.HttpUtils.Auth0Utils;
@@ -8,11 +9,12 @@ import com.example.demo.Repositories.ProductRepository;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Null;
+import javax.swing.text.html.Option;
 import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Optional;
@@ -21,23 +23,29 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
+    ControllerConfigurations config = new ControllerConfigurations();
 
     private Auth0Utils auth0Utils = new Auth0Utils();
 
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private ClientRepository clientRepository;
     
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ResponseEntity add(@RequestBody String data) {
-        JsonObject dataJson = (JsonObject) JsonParser.parseString(data);
-        String clientToken = dataJson.get("clientToken").getAsString();
-        JsonObject productJson = dataJson.get("product").getAsJsonObject();
+        public ResponseEntity add(@RequestBody String data, @RequestHeader HttpHeaders headers) {
+        System.out.println("Called: POST /product/add");
 
+        if (!auth0Utils.checkIfAuthorized(headers)){
+            return ResponseEntity.status(401).body("{ \"message\": \"Unauthorized\"}");
+        }
+
+        String clientToken = auth0Utils.getClientToken(headers);
+
+        JsonObject productJson = (JsonObject) JsonParser.parseString(data);
         JsonObject userInfo = auth0Utils.getUserInfo(clientToken);
+        productJson = productJson.getAsJsonObject("product");
         productJson.addProperty("clientId", userInfo.get("sub").getAsString());
 
         Product product = new Product();
@@ -63,19 +71,24 @@ public class ProductController {
         }
     }
 
-
     @DeleteMapping
     @ResponseBody
-    public ResponseEntity delete(@RequestParam String productid) {
+    public ResponseEntity delete(@RequestParam String productid, @RequestHeader HttpHeaders headers) {
+        System.out.println("Called: DELETE /product");
+
+        if (!auth0Utils.checkIfAuthorized(headers)){
+            return ResponseEntity.status(401).body("{ \"message\": \"Unauthorized\"}");
+        }
+
         Optional<Product> productToDelete = productRepository.findById(productid);
 
         if(productToDelete.isPresent()) {
             try {
                 productRepository.delete(productToDelete.get());
-                return ResponseEntity.status(200).body("{ \"message\": \"product with id: " + productid + " successfully deleted\"}");
             } catch (Exception e) {
                 return ResponseEntity.status(500).body(e);
             }
+            return ResponseEntity.status(200).body("{ \"message\": \"product with id: " + productid + " successfully deleted\"}");
         }
 
         return ResponseEntity.status(404).body("{ \"message\": \"product with id: " + productid + " not found\"}");
@@ -83,17 +96,23 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Object> getProducts() {
+        System.out.println("Called: GET /product");
+
         return new ResponseEntity<>(productRepository.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getProductById(@PathVariable String id) {
+        System.out.println("Called: GET /product/{id}");
+
         return new ResponseEntity<>(productRepository.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/clientid/{id}")
-    public ResponseEntity getClientByProductId(@PathVariable String id) {
-        Optional<Product> product = productRepository.findById(id);
+    @GetMapping(value = "/client/", params = "productid")
+    public ResponseEntity getClientByProductId(@PathParam("productid") String productid) {
+        System.out.println("Called: GET /product/client/{id}");
+
+        Optional<Product> product = productRepository.findById(productid);
         Optional<Client> client;
         Product gotProduct;
 
@@ -107,19 +126,42 @@ public class ProductController {
                 return ResponseEntity.status(404).body("{ \"message\": \"client with id: " + gotProduct.getClientId() + " not found\"}");
 
         }
-        return ResponseEntity.status(404).body("{ \"message\": \"product with id: " + id + " not found\"}");
+        return ResponseEntity.status(404).body("{ \"message\": \"product with id: " + productid + " not found\"}");
     }
 
-    //TODO: implement
-    @GetMapping(params = "clientToken")
-    public ResponseEntity<Object> getProductsByClientToken(@RequestParam("clientid") String clientId) {
-        List<Product> products = productRepository.findByClientId(clientId);
+    @GetMapping("/client")
+    public ResponseEntity<Object> getProductsByClientToken(@RequestHeader HttpHeaders headers) {
+        System.out.println("Called: GET /product/client");
+
+        if (!auth0Utils.checkIfAuthorized(headers)){
+            return ResponseEntity.status(401).body("{ \"message\": \"Unauthorized\"}");
+        }
+
+        String clientToken = auth0Utils.getClientToken(headers);
+
+        JsonObject userInfo = auth0Utils.getUserInfo(clientToken);
+        List<Product> products;
+
+        try {
+            products = productRepository.findByClientId(userInfo.get("sub").getAsString());
+        } catch (Exception e){
+            return ResponseEntity.status(500).body(e);
+        }
+
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     //checks if product with id productId exists for client with clientToken
-    @GetMapping(params = {"productId", "clientToken"})
-    public ResponseEntity<Object> productExistByTokenAndId(@PathParam("productId") String productId, String clientToken) {
+    @GetMapping(params = {"productId"})
+    public ResponseEntity<Object> productExistByTokenAndId(@PathParam("productId") String productId, @RequestHeader HttpHeaders headers) {
+        System.out.println("Called: GET product{productId}");
+
+        if (!auth0Utils.checkIfAuthorized(headers)){
+            return ResponseEntity.status(401).body("{ \"message\": \"Unauthorized\"}");
+        }
+
+        String clientToken = auth0Utils.getClientToken(headers);
+
         JsonObject userInfo;
         Optional<Client> client;
         try {
@@ -140,8 +182,7 @@ public class ProductController {
 
     @PostMapping(params = {"productId", "image"})
     public ResponseEntity<Object> addImageToProduct(@PathParam("productId") String productId, String image) {
-        System.out.println(productId);
-        System.out.println(image);
+        System.out.println("Called: POST product{productId}&{image}");
 
         Optional<Product> product = productRepository.findById(productId);
 

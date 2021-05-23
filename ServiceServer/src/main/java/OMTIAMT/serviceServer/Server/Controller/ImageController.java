@@ -1,7 +1,5 @@
 package OMTIAMT.serviceServer.Server.Controller;
 
-
-
 import OMTIAMT.serviceServer.Server.Model.ImgurRes;
 import OMTIAMT.serviceServer.Server.Service.ImageService;
 import com.google.gson.JsonObject;
@@ -32,29 +30,30 @@ public class ImageController {
 
     private String productId;
 
+
     @PostMapping("/uploadFile")
     public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
         try {
-                String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-                System.out.println(fileName);
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+            System.out.println(fileName);
 
-                byte[] fileContent = file.getBytes();
+            byte[] fileContent = file.getBytes();
 
-                if (fileContent == null) {
-                    return new ResponseEntity<>("File empty", HttpStatus.NOT_ACCEPTABLE);
-                }
+            if (fileContent == null) {
+                return new ResponseEntity<>("File empty", HttpStatus.NOT_ACCEPTABLE);
+            }
 
-                ResponseEntity<ImgurRes> response = imageService.writeToStore(fileContent);
+            ResponseEntity<ImgurRes> response = imageService.writeToStore(fileContent);
 
-                if (!(response.getStatusCodeValue() == 200)) {
-                    return new ResponseEntity<>("Something happened while uploading image", HttpStatus.BAD_REQUEST);
-                }
+            if (!(response.getStatusCodeValue() == 200)) {
+                return new ResponseEntity<>("Something happened while uploading image", HttpStatus.BAD_REQUEST);
+            }
 
-                String image = response.getBody().getData().getLink();
+            String image = response.getBody().getData().getLink();
 
-                ResponseEntity responseEntity = imageService.sendImage(this.productId,image);
+            ResponseEntity responseEntity = imageService.sendImage(this.productId,image);
 
-                return new ResponseEntity<>("OK", HttpStatus.OK);
+            return new ResponseEntity<>("OK", HttpStatus.OK);
 
         } catch (Exception e) {
             return new ResponseEntity<>("File type not accepted", HttpStatus.BAD_REQUEST);

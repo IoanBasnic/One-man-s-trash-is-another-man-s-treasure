@@ -3,6 +3,7 @@ package com.example.demo.DataModels.product;
 import com.google.gson.JsonObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import springfox.documentation.spring.web.json.Json;
 
 
 @Document(collection = "product")
@@ -68,6 +69,14 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public void jsonToProduct(JsonObject productJson){

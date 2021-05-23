@@ -1,26 +1,17 @@
 package OMTIAMT.serviceServer.Server.Service;
 
 import OMTIAMT.serviceServer.Server.Model.ImgurRes;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +44,7 @@ public class ImageService {
 
     public ResponseEntity<Object> sendImage(String productId, String image){
 
-        final String uri = "HTTP://localhost:8081/image?productId={id}&image={image}";
+        final String uri = "https://www.covidtector.tk:8080/product?productId={id}&image={image}";
         Map<String, String> vars = new HashMap<>();
         vars.put("id", productId);
         vars.put("image", image);
@@ -61,44 +52,47 @@ public class ImageService {
         System.out.println(productId);
         System.out.println(image);
 
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        try {
-//            ResponseEntity responseEntity = restTemplate.getForEntity(uri, String.class, vars);
-//
-//        } catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
-//
-//            if (HttpStatus.NOT_FOUND.equals(httpClientOrServerExc.getStatusCode())) {
-//
-//                System.out.println("NOT FOUND");
-//                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//            }
-//        }
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    public ResponseEntity<String> checkProduct(String productId, String clientToken){
-
-        final String uri = "HTTP://localhost:8081/image?productId={id}&clientToken={token}";
-        Map<String, String> vars = new HashMap<>();
-        vars.put("id", productId);
-        vars.put("token", clientToken);
-
         RestTemplate restTemplate = new RestTemplate();
-        //ResponseEntity responseEntity = restTemplate.getForEntity(uri, String.class,vars);
-                //restTemplate.getForObject(uri, String.class,vars);
 
         try {
-            ResponseEntity responseEntity = restTemplate.getForEntity(uri, String.class, vars);
+            ResponseEntity responseEntity = restTemplate.postForObject(uri, vars, ResponseEntity.class);
 
         } catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
 
             if (HttpStatus.NOT_FOUND.equals(httpClientOrServerExc.getStatusCode())) {
 
                 System.out.println("NOT FOUND");
-               return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> checkProduct(String productId, String clientToken){
+
+        final String uri = "https://www.covidtector.tk:8080/product?productId={id}";
+        Map<String, String> vars = new HashMap<>();
+        vars.put("id", productId);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(clientToken);
+
+        HttpEntity entity = new HttpEntity(headers);
+        ResponseEntity responseEntity;
+
+        try {
+            responseEntity = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, vars);
+        } catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        if (HttpStatus.NOT_FOUND.equals(responseEntity.getStatusCode())) {
+
+            System.out.println("NOT FOUND");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity(HttpStatus.OK);
