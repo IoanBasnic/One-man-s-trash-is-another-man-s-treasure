@@ -1,6 +1,5 @@
 package OMTIAMT.serviceServer.Server.Controller;
 
-import OMTIAMT.serviceServer.Server.Model.Client;
 import OMTIAMT.serviceServer.Server.Model.EmailBuilder;
 import OMTIAMT.serviceServer.Server.Model.Mail;
 import OMTIAMT.serviceServer.Server.Model.Notifications.Notification;
@@ -9,7 +8,6 @@ import OMTIAMT.serviceServer.Server.Service.NotificationService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.apache.commons.mail.EmailException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.*;
-import org.apache.commons.mail.HtmlEmail;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/product")

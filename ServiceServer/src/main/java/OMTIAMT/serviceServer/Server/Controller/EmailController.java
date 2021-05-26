@@ -9,10 +9,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.Optional;
 
 interface ClientRepository extends MongoRepository<Client, String> {

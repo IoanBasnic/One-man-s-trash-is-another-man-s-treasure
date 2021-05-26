@@ -5,7 +5,6 @@ import java.util.Properties;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.bson.internal.Base64;
 
 
 public class EmailBuilder {
