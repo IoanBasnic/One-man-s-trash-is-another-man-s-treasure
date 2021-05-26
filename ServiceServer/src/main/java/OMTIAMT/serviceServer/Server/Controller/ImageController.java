@@ -4,22 +4,15 @@ import OMTIAMT.serviceServer.Server.Model.ImgurRes;
 import OMTIAMT.serviceServer.Server.Service.ImageService;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.apache.commons.lang.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.SocketUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.websocket.server.PathParam;
 import java.io.IOException;
-import java.nio.file.Files;
 
 @RestController
 @RequestMapping(value = "/image")
@@ -32,7 +25,7 @@ public class ImageController {
 
 
     @PostMapping("/uploadFile")
-    public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
+    public ResponseEntity uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
         System.out.println("called endpoint");
 
         try {
@@ -42,23 +35,27 @@ public class ImageController {
             byte[] fileContent = file.getBytes();
 
             if (fileContent == null) {
-                return new ResponseEntity<>("File empty", HttpStatus.NOT_ACCEPTABLE);
+                return new ResponseEntity("{\"message\": \"File empty\"}", HttpStatus.NOT_ACCEPTABLE);
             }
 
             ResponseEntity<ImgurRes> response = imageService.writeToStore(fileContent);
 
-            if (!(response.getStatusCodeValue() == 200)) {
-                return new ResponseEntity<>("Something happened while uploading image", HttpStatus.BAD_REQUEST);
+            if (response.getStatusCodeValue() != 200) {
+                return new ResponseEntity("{\"message\": \"Something happened while uploading image\"}", HttpStatus.BAD_REQUEST);
             }
 
             String image = response.getBody().getData().getLink();
 
-            ResponseEntity responseEntity = imageService.sendImage(this.productId,image);
+            if(imageService.sendImage(this.productId,image))
+                return new ResponseEntity("{\"message\": \"OK\"}", HttpStatus.OK);
+            else
+                return new ResponseEntity("{\"message\": \"File type not accepted\"}", HttpStatus.BAD_REQUEST);
 
-            return new ResponseEntity<>("OK", HttpStatus.OK);
 
         } catch (Exception e) {
-            return new ResponseEntity<>("File type not accepted", HttpStatus.BAD_REQUEST);
+            System.out.println(e);
+
+            return new ResponseEntity("{\"message\": \"File type not accepted\"}", HttpStatus.BAD_REQUEST);
         }
     }
     public static ByteArrayResource getUserFileResource(byte[] bytes) throws IOException {

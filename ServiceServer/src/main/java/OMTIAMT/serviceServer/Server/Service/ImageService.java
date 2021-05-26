@@ -3,20 +3,16 @@ package OMTIAMT.serviceServer.Server.Service;
 import OMTIAMT.serviceServer.Server.Model.ImgurRes;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpResponse;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +43,7 @@ public class ImageService {
         return response;
     }
 
-    public ResponseEntity<Object> sendImage(String productId, String image){
+    public Boolean sendImage(String productId, String image){
 
         final String uri = "https://www.covidtector.tk:8080/product?productId={id}&image={image}";
         Map<String, String> vars = new HashMap<>();
@@ -60,18 +56,15 @@ public class ImageService {
         RestTemplate restTemplate = new RestTemplate();
 
         try {
-            ResponseEntity responseEntity = restTemplate.postForObject(uri, null,  ResponseEntity.class, vars);
-
-        } catch (HttpClientErrorException | HttpServerErrorException httpClientOrServerExc) {
-
-            if (HttpStatus.NOT_FOUND.equals(httpClientOrServerExc.getStatusCode())) {
-
-                System.out.println("NOT FOUND");
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
+            restTemplate.postForObject(uri, null,  ResponseEntity.class, vars);
+        } catch (HttpMessageConversionException e) {
+            System.out.println(e.toString());
+            return true;
+        } catch (Exception e){
+            System.out.println("Something bad happened in post to Middleware");
+            return false;
         }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return true;
     }
 
     public ResponseEntity<String> checkProduct(String productId, String clientToken){
